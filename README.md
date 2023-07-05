@@ -40,7 +40,7 @@ The transit measure (unique to the 2016 dataset) covers DAs in Canada’s larges
 
 The “CanALE DA Crosswalk File” this file is envisioned to provide a one-to-one geographic correspondence between dissemination area geographies from different census years. This file contains 220,331 unique records, which represent the centroids (centre points) of dissemination areas for four census years (2001, 2006, 2011, 2016). The unique identifier (“UID”) is a thirteen-character field, which consists of the census year, an underscore (“_”), and the eight-digit unique identifier for the dissemination area (DA) for the unique centroid. For instance, UID “2001_10010001” represents the centroid of DA ‘10010001’, which was valid in the 2001 census year.
 
-Full detail and data for the cross-walk file are provided here.
+[Full detail and data for the cross-walk file are provided here](https://github.com/walkabillylab/Can-ALE/tree/main/CanALE_DA_Crosswalk_File)
 
 ## Citation
 

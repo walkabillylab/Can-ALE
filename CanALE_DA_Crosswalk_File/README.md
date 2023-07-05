@@ -3,7 +3,9 @@
 ## Format
 This file is provided as a spreadsheet in Excel format (.xlsx) called “CanALE_DA_Crosswalk_File”
 
-
+| Dataset | Data Download |
+| ------- | ------------- |
+| CanALE DA Crosswalk File | [CanALE_DA_Crosswalk_File.xlsx](https://github.com/walkabillylab/Can-ALE/blob/main/CanALE_DA_Crosswalk_File/CanALE_DA_Crosswalk_File.xlsx) |
 
 ## About this file
 
