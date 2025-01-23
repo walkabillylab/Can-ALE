@@ -19,7 +19,7 @@ is_valid_date <- function(date) {
     "2021-09-06", # Labour Day
     "2021-10-11", # Thanksgiving
     "2021-11-11", # Remembrance Day
-    "2021-02-15", # Family Day
+    "2021-02-15" # Family Day
   ))
   
   if (date %in% holidays) return(FALSE)
