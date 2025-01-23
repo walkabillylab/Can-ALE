@@ -36,7 +36,7 @@ date_ranges <- list(
   seq(as.Date("2021-02-01"), as.Date("2021-02-28"), by = "day"), 
   seq(as.Date("2021-03-01"), as.Date("2021-03-31"), by = "day"),
   seq(as.Date("2021-08-01"), as.Date("2021-08-31"), by = "day"),
-  seq(as.Date("2021-12-01"), as.Date("2021-12-15"), by = "day")
+  seq(as.Date("2021-12-01") as.Date("2021-12-15"), by = "day")
 )
 
 # Flag to check if GTFS data is found
