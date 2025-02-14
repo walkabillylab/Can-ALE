@@ -1,0 +1,80 @@
+library(readxl)
+library(writexl)
+library(dplyr)
+
+# Define the main directory path
+main_dir <- "V:/CanALE/INT_DENS"
+
+# Define subfolders and reference files
+folders <- list(
+  "Intersection_density_2006" = "DA_2006.xlsx",
+  "Intersection_density_2011" = "DA_2011.xlsx",
+  "Intersection_density_2016" = "DA_2016.xlsx",
+  "Intersection_density_2021" = "DA_2021.xlsx"
+)
+
+# Iterate through each folder
+for (folder in names(folders)) {
+  # Define the full path of the folder and reference file
+  folder_path <- file.path(main_dir, folder)
+  reference_file <- file.path(folder_path, folders[[folder]])
+  
+  # Read the reference file
+  reference_data <- read_excel(reference_file)
+  
+  # Ensure DAUID is a consistent column name and type
+  reference_data <- reference_data %>% 
+    rename(DAUID = 1) %>% 
+    mutate(DAUID = as.character(DAUID))
+  
+  # Initialize a result dataframe with just DAUID
+  final_data <- reference_data %>% select(DAUID)
+  
+  # List all Excel files in the folder (excluding the reference file)
+  excel_files <- list.files(folder_path, pattern = "\\.xlsx$", full.names = TRUE)
+  excel_files <- excel_files[!grepl(folders[[folder]], excel_files)]  # Exclude reference file
+  
+  # Merge intersection data from all files
+  for (file in excel_files) {
+    file_data <- read_excel(file)
+    
+    # Standardize column names and ensure DAUID is consistent
+    file_data <- file_data %>% 
+      rename(DAUID = 1, 
+             intersection_count = "intersection_count",
+             intersection_density = "intersection_density") %>% 
+      mutate(DAUID = as.character(DAUID))
+    
+    # Keep only DAUID, intersection_count, and intersection_density
+    file_data <- file_data %>% select(DAUID, intersection_count, intersection_density)
+    
+    # Replace missing columns with 0 if they don't exist
+    if (!"intersection_count" %in% colnames(file_data)) {
+      file_data$intersection_count <- 0
+    }
+    if (!"intersection_density" %in% colnames(file_data)) {
+      file_data$intersection_density <- 0
+    }
+    
+    # Merge current file data with final data
+    final_data <- final_data %>% 
+      left_join(file_data, by = "DAUID") %>% 
+      mutate(
+        intersection_count = rowSums(across(starts_with("intersection_count")), na.rm = TRUE),
+        intersection_density = rowSums(across(starts_with("intersection_density")), na.rm = TRUE)
+      ) %>% 
+      select(DAUID, intersection_count, intersection_density)  # Retain only the main columns
+  }
+  
+  # Set NA values to 0 in the final dataset
+  final_data <- final_data %>% 
+    mutate(
+      intersection_count = ifelse(is.na(intersection_count), 0, intersection_count),
+      intersection_density = ifelse(is.na(intersection_density), 0, intersection_density)
+    )
+  
+  # Save the final merged result
+  output_file <- file.path(folder_path, paste0("Merged_", folders[[folder]]))
+  write_xlsx(final_data, output_file)
+  cat("Merged data saved for", folder, "to", output_file, "\n")
+}
