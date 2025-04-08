@@ -1,0 +1,115 @@
+# FINAL SCRIPT FOR 2016
+# CALCULATE POPULATION & DWELLING DENSITIES WITHIN 1KM BUFFERS AROUND EACH DISSEMINATION AREA CENTROID USING CANCENSUS PACKAGE
+
+# Install and Load Required Packages
+install.packages(c("cancensus", "sf", "dplyr", "writexl", "purrr", "future", "future.apply"))
+library(cancensus)
+library(sf)
+library(dplyr)
+library(writexl)
+library(purrr)
+library(future)
+library(future.apply)
+
+# Set Up a Persistent Cache Directory (modify the path as needed)
+set_cancensus_cache_path("V:/CanALE_30Mar2025/cache", install = TRUE, overwrite = TRUE)
+
+# Set or Your CensusMapper API Key
+set_cancensus_api_key("CensusMapper_723e3f4e60999d1127c93026d17c3b50", install = TRUE, overwrite = TRUE)
+
+# Choose Province Code (PRUID) 
+# NL=10, PE=11, NS=12, NB=13, QC=24, ON=35, MB=46,SK=47, AB=48, BC=59, YK=60, NWT=61, Nunavut=62
+pr_code <- "47"   # Modify for your province
+
+# Configure Parallel Processing
+plan(multisession, workers = 5)
+options(future.globals.maxSize = 1 * 1024^3)  # ~1 GB; adjust if needed
+
+# Define Output File Path
+# Adjust filename to reflect province
+output_xlsx <- paste0("V:/CanALE_11Mar2025/Data/province_", pr_code, "_dwelling_population_density_1km.xlsx")
+
+# Download 2016 Census Data for the Chosen Province using cancensus
+#    Using 'v_CA16_401' for total population, 'v_CA16_404' for total private dwellings.
+#    'regions = list(PR = pr_code)' requests that specific province
+prov_census <- get_census(
+  dataset = "CA16",
+  regions = list(PR = pr_code),
+  vectors = c("v_CA16_401",    # 2016 total population
+              "v_CA16_404"),   # 2016 total private dwellings
+  level = "DA",
+  geo_format = "sf",
+  use_cache = TRUE
+)
+
+# Print column names to confirm what's returned
+print(names(prov_census))
+
+# Rename columns to match the actual data labels
+# Typically: "v_CA16_401: Population, 2016" and "v_CA16_404: Total private dwellings"
+prov_census <- prov_census %>%
+  rename(
+    population_2016        = `v_CA16_401: Population, 2016`,
+    private_dwellings_2016 = `v_CA16_404: Total private dwellings`
+  )
+
+# Transform DAs to EPSG:3347 and Filter Out NAs
+prov_census_3347 <- st_transform(prov_census, 3347) %>%
+  filter(!is.na(population_2016) & !is.na(private_dwellings_2016))
+
+# Compute DA Centroids & 1-km Buffers
+da_centroids <- st_centroid(prov_census_3347)
+da_buffers   <- st_buffer(da_centroids, dist = 1000)  # 1 km radius
+
+# Keep only the DA ID column (GeoUID)
+da_buffers <- da_buffers %>% select(GeoUID)
+
+#  Define Partial Intersection Function (Weighing Method)
+buffer_intersect <- function(i) {
+  one_buffer <- da_buffers[i, ]
+  buffer_id  <- one_buffer$GeoUID
+  
+  # Intersect this 1-km buffer with all DAs
+  inter <- suppressWarnings(st_intersection(prov_census_3347, one_buffer))
+  
+  # For each intersected polygon, compute fraction of DA area in the buffer
+  inter <- inter %>%
+    mutate(
+      area_original = st_area(prov_census_3347[match(GeoUID, prov_census_3347$GeoUID), ]),
+      area_part     = st_area(geometry),
+      # Force fraction ≤ 1 to handle minor geometry errors
+      frac          = pmin(as.numeric(area_part / area_original), 1)
+    )
+  
+  # Weighted sums for population & dwellings
+  pop_sum  <- sum(inter$population_2016        * inter$frac, na.rm = TRUE)
+  dwel_sum <- sum(inter$private_dwellings_2016 * inter$frac, na.rm = TRUE)
+  
+  # Buffer area in square meters (3141593 m²)
+  buffer_area_m2 <- as.numeric(st_area(one_buffer))
+  
+  data.frame(
+    GeoUID_buffer  = buffer_id,
+    pop_in_buffer  = pop_sum,
+    dwel_in_buffer = dwel_sum,
+    buffer_area_m2 = buffer_area_m2
+  )
+}
+
+# Apply Partial Intersection in Parallel
+n_buffers  <- nrow(da_buffers)
+results_list <- future_lapply(seq_len(n_buffers), buffer_intersect, future.seed = FALSE)
+results_df   <- do.call(rbind, results_list)
+
+# Merge & Compute 1-km Buffer Densities
+final_results <- da_buffers %>%
+  st_set_geometry(NULL) %>%
+  rename(GeoUID_da = GeoUID) %>%
+  left_join(results_df, by = c("GeoUID_da" = "GeoUID_buffer")) %>%
+  mutate(
+    pop_density_1km  = pop_in_buffer  / (buffer_area_m2 / 1e6),  # people per km²
+    dwel_density_1km = dwel_in_buffer / (buffer_area_m2 / 1e6)   # dwellings per km²
+  )
+
+# Write Final Results to Excel
+write_xlsx(final_results, output_xlsx)
