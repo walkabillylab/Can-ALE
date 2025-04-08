@@ -1,0 +1,117 @@
+#   FINAL SCRIPT: CALCULATE POI COUNTS WITHIN 1KM BUFFERS AROUND DA CENTROIDS OF NL
+
+library(sf)
+library(dplyr)
+library(writexl)
+library(future)
+library(future.apply)
+
+# Disable S2 to force planar operations in EPSG:3347
+sf::sf_use_s2(FALSE)
+
+
+# Configure Parallel 
+plan(multisession, workers = 5)
+options(future.globals.maxSize = 1 * 1024^3)  # 1 GB; adjust as needed
+
+# Define File Paths
+poi_dir     <- "V:/CanALE_27Feb2025/POI/2016/NL_POI"   # Folder with POI shapefiles (gis_osm_pois_free_1.shp & gis_osm_pois_a_free_1.shp)
+da_path     <- "V:/CanALE_27Feb2025/Data/DA/DA_2016/lda_000b16a_e.shp"
+output_xlsx <- "V:/CanALE_27Feb2025/Output/POI_Counts_NL.xlsx"
+
+# Read & Subset DA to NL (PRUID == "10")
+da_all <- st_read(da_path, quiet = TRUE)
+da_NL  <- da_all %>% filter(PRUID == "10")
+if (nrow(da_NL) == 0) {
+  stop("No DAs found for PRUID == '10'. Check your DA shapefile fields.")
+}
+
+# Transform to EPSG:3347 (NAD83 / Statistics Canada Lambert)
+da_NL_proj <- st_transform(da_NL, 3347)
+
+# Compute centroids and create 1-km buffers
+da_centroids <- st_centroid(da_NL_proj)
+da_buffers   <- st_buffer(da_centroids, dist = 1000)
+
+# Ensure DAUID exists; assign DAUID to buffers from the DA layer
+if (!"DAUID" %in% names(da_NL_proj)) {
+  stop("Field 'DAUID' not found in the DA layer.")
+}
+da_buffers$DAUID <- da_NL_proj$DAUID
+
+# Read POI Shapefiles and Mark Source
+pois_files <- file.path(poi_dir, c("gis_osm_pois_free_1.shp",
+                                   "gis_osm_pois_a_free_1.shp"))
+
+poi_list <- future_lapply(pois_files, function(shp_file) {
+  message("Reading POI file: ", shp_file)
+  poi <- st_read(shp_file, quiet = TRUE)
+  poi <- st_transform(poi, 3347)
+  
+  # For polygon data, repair and convert to centroids; mark as "polygon"
+  if (any(grepl("POLYGON", unique(st_geometry_type(poi))))) {
+    poi <- st_make_valid(poi)
+    poi <- st_centroid(poi)
+    poi$source <- "polygon"
+  } else {
+    poi$source <- "point"
+  }
+  return(poi)
+}, future.seed = FALSE)
+
+poi_all <- bind_rows(poi_list)
+message("Total NL POI records after merging: ", nrow(poi_all))
+
+# Filter Out Undesired POI Codes
+undesired_codes <- c(2423, 2725, 2424, 2951, 2961, 2734, 2422)
+if ("code" %in% names(poi_all)) {
+  poi_all <- poi_all %>% filter(!(code %in% undesired_codes))
+  message("Remaining POI records after 'code' filter: ", nrow(poi_all))
+} else {
+  warning("Column 'code' not found in POI data — no filter applied.")
+}
+
+# Spatial Join: Associate POIs with 1-km Buffers
+# Perform a spatial join to assign each POI the DAUID of the buffer it falls in.
+join_sf <- st_join(poi_all, da_buffers, join = st_intersects)
+join_sf <- join_sf %>% filter(!is.na(DAUID))
+message("Total joined rows (POIs within 1 km): ", nrow(join_sf))
+
+# Join Centroid Info and Compute Distance for Each Joined Record
+# Prepare a data frame of DA centroids as WKT to avoid sf join issues.
+centroid_df <- da_centroids %>% 
+  select(DAUID) %>% 
+  mutate(centroid_wkt = st_as_text(geometry)) %>% 
+  st_set_geometry(NULL)
+
+# Join the centroid info to the spatial join result.
+join_sf2 <- left_join(join_sf, centroid_df, by = "DAUID")
+# Convert the centroid WKT back to geometry.
+join_sf2$centroid_geom <- st_as_sfc(join_sf2$centroid_wkt, crs = st_crs(da_NL_proj))
+# Compute the distance from each POI to its DA centroid.
+join_sf2$dist_to_centroid <- as.numeric(st_distance(st_geometry(join_sf2), join_sf2$centroid_geom, by_element = TRUE))
+
+# Summarize POI Counts per DA and Adjust for DA Center
+# Define a very small tolerance (in meters) for considering a point to be "at" the DA center.
+tol <- 0.001  # 1 mm tolerance
+
+# For each DA, count the total number of joined POIs.
+# If any POI in that DA has a distance less than tol, assume the DA center is included and subtract 1.
+poi_summary <- join_sf2 %>%
+  group_by(DAUID) %>%
+  summarize(total_count = n(),
+            center_present = any(dist_to_centroid < tol)) %>%
+  mutate(final_count = ifelse(center_present, total_count - 1, total_count))
+# Ensure no negative counts.
+poi_summary$final_count <- pmax(poi_summary$final_count, 0)
+
+poi_summary_df <- st_set_geometry(poi_summary, NULL)
+
+# Merge with the full DA set so that DAs with no POIs get a count of 0.
+final_df <- da_NL_proj %>% 
+  select(DAUID) %>% 
+  left_join(poi_summary_df %>% select(DAUID, final_count), by = "DAUID") %>%
+  mutate(final_count = ifelse(is.na(final_count), 0, final_count))
+
+# Write Final Results to Excel
+write_xlsx(final_df %>% select(DAUID, final_count), output_xlsx)
