@@ -1,0 +1,104 @@
+library(sf)
+library(dplyr)
+library(tidyr)
+library(future); library(future.apply)
+library(writexl)
+sf::sf_use_s2(FALSE)
+plan(multisession, workers = 5)
+options(future.globals.maxSize = 1 * 1024^3)
+
+# INPUT PATHS 
+poi_dir  <- "V:/CanALE/POI/2011/NWT_POI"
+da_path  <- "V:/CanALE/Data/DA/DA_2011/gda_000b11a_e.shp"
+out_xlsx <- "V:/CanALE/Data/POI/POI_Weighted/2011/POI_weighted_decay_NWT.xlsx"
+
+# 1) DISSEMINATION AREAS (PRUID 11 = PEI) 
+da_pe <- st_read(da_path, quiet = TRUE) |> 
+  filter(PRUID == "61") |>
+  st_transform(3347)
+
+centroids <- st_centroid(da_pe)
+buffers   <- st_buffer(centroids, 1000)
+buffers$DAUID <- da_pe$DAUID     # keep id
+
+# 2) POIs  (points + polygons→centroids) 
+poi_files <- file.path(
+  poi_dir, c("gis_osm_pois_07_1.shp", "gis_osm_pois_a_07_1.shp"))
+
+pois <- future_lapply(poi_files, \(f){
+  p <- st_read(f, quiet = TRUE) |> st_transform(3347)
+  if (any(grepl("POLYGON", unique(st_geometry_type(p)))))
+    p <- st_make_valid(p) |> st_centroid()
+  p
+}) |> bind_rows()
+
+# 2.1  “UNWANTED” CODES  
+undesired <- c(2423, 2725, 2424, 2951, 2961, 2734, 2422)
+pois <- filter(pois, !(code %in% undesired))
+
+# 3)  LOOK-UP TABLE OF CODE-BASED WEIGHTS  
+wt_1 <- c( # keep but weight = 1
+  2562,2731,2734,2736,2905,2963,2423,2733,2725,2529,2518,2907,2422,2541,2563,2564,2424,2406,
+  2514,2512,2951,2546,2009,2543,2011,2002,2513,2904,2544,2547,
+  2521,2255,2015,2404,2561,2405,2520,2503,2568,2955,2724,2525,2723,
+  2202,2013,2953,2524,2001,2010,2030,2033,2031,2032,
+  2732,2421,2517,2523,2006,2701,2950,2526,2258,2567,2593,2129,
+  2530,2742,2961,2952,2962,2964,2735,2954,2743,2737,2034,2565
+)
+
+wt_2 <- c(
+  2014,2111,2602,2721,2601,2542,2515,2516,2203,2121,2120,2903,2110,2401,2402,2722,2519,2101,
+  2004,2005,2099,2522,2201,2744,2008,2590,2592,2906
+)
+
+wt_3 <- c(
+  2305,2403,2902,2566,2307,2303,2084,2012,2505,2206,2302,2306,2257,2083,2007,2504,2527,2741,2252,
+  2304,2301,2256,2253,2901,2081
+)
+
+wt_4 <- c(
+  2016,2502,2510,2511,2528,2204,2205,2082,2251,2501
+)
+
+
+# Build named vector: defaults to 1, then overwrite
+code_weights <- setNames(rep(1, length(unique(pois$code))), 
+                         unique(pois$code))
+code_weights[names(code_weights) %in% wt_2] <- 2
+code_weights[names(code_weights) %in% wt_3] <- 3
+code_weights[names(code_weights) %in% wt_4] <- 4
+# any codes left in wt_1 stay at 1 (they’re already default)
+
+# 4) SPATIAL JOIN  (POI  → DA buffer) 
+joined <- st_join(pois, buffers) |> filter(!is.na(DAUID))
+
+# add centroid geometry column
+cent_tbl <- centroids |> transmute(DAUID, geom_cent = geometry) |> 
+  st_set_geometry(NULL)
+joined    <- left_join(joined, cent_tbl, by = "DAUID")
+
+# 5) DISTANCE DECAY  +  CODE WEIGHT  
+joined$dist_m <- as.numeric(
+  st_distance(st_geometry(joined), joined$geom_cent, by_element = TRUE))
+
+decay_wt <- 1.0126 * exp(-0.0013 * joined$dist_m)
+
+joined$code_wt <- code_weights[as.character(joined$code)]
+
+joined$final_wt <- decay_wt * joined$code_wt
+
+# 6)  AGGREGATE TO DA  
+summary <- joined |>
+  group_by(DAUID) |>
+  summarise(raw_poi      = n(),
+            weighted_poi = sum(final_wt),
+            .groups = "drop")
+
+# add zero rows for empty buffers
+final <- da_pe |> st_set_geometry(NULL) |>
+  select(DAUID) |>
+  left_join(summary, by = "DAUID") |>
+  mutate(across(c(raw_poi, weighted_poi), \(x) tidyr::replace_na(x, 0)))
+
+# 7)  WRITE OUT 
+write_xlsx(final, out_xlsx)
