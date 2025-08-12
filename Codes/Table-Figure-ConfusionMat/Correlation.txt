@@ -1,0 +1,36 @@
+library(readxl)
+library(dplyr)
+library(writexl)
+
+# 1. Excel file path (variables is the final excel file that includes walk_rate and active_transport_rate added to ALE measures (dwel_density, int_density, poi, poi_weighted,trstop_count)) 
+
+file_path <- "V:/CanALE/2016/variables.xlsx"
+
+# 2. Read the sheet and assign it to dataframe
+
+df <- read_excel(file_path)
+
+# 3. Select the variables 
+vars_df <- df %>%
+  select(
+    dwel_density,
+    int_density,
+    poi,
+    poi_weighted,
+    trstop_count,
+    walk_rate,
+    active_transport_rate
+  )
+
+# 4. Compute the correlation matrix
+#    - use="pairwise.complete.obs" ignores NA pairs 
+cor_matrix <- cor(vars_df,
+                  use    = "pairwise.complete.obs",
+                  method = "pearson")
+
+# 5. Print the result
+print(cor_matrix)
+
+write_xlsx(as.data.frame(cor_matrix),
+           "V:/CanALE/2016/correlation_matrix.xlsx")
+
