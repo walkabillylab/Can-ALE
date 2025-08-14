@@ -1,0 +1,137 @@
+library(sf)
+library(dplyr)
+library(writexl)
+library(lwgeom)
+library(tidyr)
+library(future.apply)
+
+# SETUP
+start_time <- Sys.time()
+plan(multisession, workers = 5)
+options(future.globals.maxSize = 2 * 1024^3) # Increased memory for larger data
+sf_use_s2(FALSE)
+crs_projected <- 3347
+
+# Setting Data Paths
+da_path <- "V:/CanALE/Data/DA/DA_2016/lda_000b16a_e.shp"
+rnf_path <- "V:/CanALE/Data/RNF/lrnf000r16a_e.shp"
+
+# Define provinces and their PRUIDs
+provinces <- list("PE" = 11)
+
+for (province in names(provinces)) {
+  pruid <- provinces[[province]]
+  cat("Processing ALL DAs in", province, "with scaling method...\n")
+  start_time_province <- Sys.time()
+  
+  
+  # Load DA data and filter for the entire province
+  DA <- st_read(da_path, quiet = TRUE)
+  DA_province <- DA %>%
+    filter(PRUID == pruid) %>% # Filter for the whole province
+    st_transform(crs_projected)
+  # =====================================================================
+  
+  # Create 1 km buffers around DA centroids
+  DA_centroids <- st_centroid(DA_province)
+  DA_buffers <- st_buffer(DA_centroids, 1000)
+  
+  # Load road data
+  roads <- st_read(rnf_path, quiet = TRUE)
+  roads_province <- roads %>%
+    filter(PRUID_L == pruid) %>%
+    st_make_valid() %>%
+    st_transform(crs_projected)
+  
+  # Filter limited access roads
+  limited_access_classes <- c(10, 11, 12, 13)
+  roads_province <- roads_province %>%
+    filter(!CLASS %in% limited_access_classes)
+  
+  # Create a tile grid over the entire province
+  province_bbox <- st_bbox(DA_province)
+  tile_size <- 10000 # 10 km tiles
+  grid <- st_make_grid(st_as_sfc(province_bbox), cellsize = tile_size, what = "polygons")
+  grid_sf <- st_sf(geometry = grid)
+  
+  # SPATIAL INDEXING
+  cat("Creating spatial index for roads and tiles...\n")
+  roads_in_tile_index <- st_intersects(grid_sf, roads_province)
+  cat("Spatial index created. Starting parallel processing...\n")
+  # =========================================================================
+  
+  # Tile processing function
+  process_tile_find_points <- function(tile_polygon, roads_data) {
+    
+    local_roads <- st_intersection(roads_data, tile_polygon)
+    local_roads <- st_collection_extract(local_roads, "LINESTRING")
+    if (nrow(local_roads) < 2) return(NULL)
+    all_intersections <- st_intersection(local_roads)
+    points_only <- all_intersections[st_geometry_type(all_intersections) == "POINT", ]
+    if (nrow(points_only) == 0) return(NULL)
+    points_union <- st_union(points_only)
+    roads_noded <- lwgeom::st_split(local_roads, points_union)
+    roads_noded <- st_collection_extract(roads_noded, "LINESTRING")
+    coords <- st_coordinates(roads_noded)
+    endpoints <- as.data.frame(coords) %>%
+      group_by(L1) %>%
+      summarize(X_start = first(X), Y_start = first(Y), X_end = last(X), Y_end = last(Y), .groups = "drop")
+    all_points <- endpoints %>%
+      tidyr::pivot_longer(cols = -L1, names_to = c(".value", "pos"), names_pattern = "(X|Y)_(start|end)") %>%
+      select(X, Y)
+    point_counts <- all_points %>%
+      group_by(X, Y) %>%
+      summarize(n_lines = n(), .groups = "drop")
+    int_3plus <- point_counts %>% filter(n_lines >= 3)
+    if (nrow(int_3plus) == 0) return(NULL)
+    return(st_as_sf(int_3plus, coords = c("X", "Y"), crs = crs_projected))
+  }
+  
+  # Run parallel processing using spatial index
+  list_of_intersection_sfs <- future_lapply(
+    X = seq_len(nrow(grid_sf)), future.seed = TRUE,
+    FUN = function(i) {
+      # Get only the roads relevant to this tile using the index
+      tile_road_indices <- roads_in_tile_index[[i]]
+      if (length(tile_road_indices) == 0) return(NULL)
+      
+      relevant_roads <- roads_province[tile_road_indices, ]
+      
+      process_tile_find_points(grid_sf[i, ], relevant_roads)
+    }
+  )
+  # =======================================================================
+  
+  # Combine and count the results
+  list_of_intersection_sfs <- Filter(Negate(is.null), list_of_intersection_sfs)
+  if (length(list_of_intersection_sfs) > 0) {
+    all_intersections_province <- do.call(rbind, list_of_intersection_sfs)
+    all_intersections_unique <- all_intersections_province %>% distinct(geometry)
+    intersections_in_buffer <- st_intersects(DA_buffers, all_intersections_unique)
+    final_counts <- lengths(intersections_in_buffer)
+  } else {
+    final_counts <- rep(0, nrow(DA_buffers))
+  }
+  
+  # Create the final results table
+  final_results <- DA_buffers %>%
+    st_drop_geometry() %>%
+    select(DAUID) %>%
+    mutate(
+      intersection_count = final_counts,
+      intersection_density = intersection_count / pi
+    ) %>%
+    # Replace NA values with 0
+    mutate(
+      intersection_count = ifelse(is.na(intersection_count), 0, intersection_count),
+      intersection_density = ifelse(is.na(intersection_density), 0, intersection_density)
+    )
+  
+  # Export results to Excel
+  output_path <- paste0("V:/CanALE/Data/intersection_results_PE_2016.xlsx")
+  write_xlsx(final_results, output_path)
+  
+  cat("Completed processing for", province, "in", difftime(Sys.time(), start_time_province, units="mins"), "minutes\n")
+}
+
+cat("All provinces completed successfully in", difftime(Sys.time(), start_time, units="mins"), "minutes\n")
