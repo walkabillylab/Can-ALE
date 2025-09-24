@@ -109,6 +109,32 @@ For the 2011, 2016, and 2021 census years, the first step involved converting po
 ## Results
 
 The final Can-ALE indexes for each year are available via the links below:
-* [**Link to Final Can-ALE Index Files**]()
+* [**Link to Final Can-ALE Index Files**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Data/ALE_Index_Class)
+
+# Appendix
+
+| Column 1 | Column 2 | Column 3 | Column 4 |
+| :--- | :--- | :--- | :--- |
+| Alpine Hut | Courthouse | Memorial | Tower |
+| Archaeological | Do it yourself | Mobile Phone Shop | Toy Shop |
+| Artwork | Embassy | Monument | Track |
+| Battlefield | Florist | Nightclub | Travel Agent |
+| Beauty Shop | Fountain | Nursing Home | Vending Any |
+| Beverages | Fire Station | Observation Tower | Veterinary |
+| Camera Surveillance | Fort | Outdoor Shop | Video Shop |
+| Camp Site | Furniture Shop | Police | Viewpoint |
+| Car Dealership | Garden Centre | Prison | Wastewater Plant |
+| Car Rental | Golf Course | Recycling Glass | Water Works |
+| Car Repair | Gift Shop | Recycling | Water Mill |
+| Car Sharing | Graveyard | Recycling Metal | Wayside Cross |
+| Car Wash | Guesthouse | Recycling Clothes | Water Tower |
+| Caravan Site | Hairdresser | Recycling Paper | Wayside Shrine |
+| Castle | Hostel | Ruins | Water Well |
+| Chalet | Hunting Stand | Shelter | Windmill |
+| Chemist | Jeweler | Shoe Shop | Zoo |
+| Clothes | Kiosk | Stationery | - |
+| Comms Tower | Laundry | Telephone | - |
+| Computer Shop | Lighthouse | Tourist Info | - |
+
 
 
