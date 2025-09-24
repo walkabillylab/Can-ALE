@@ -1,6 +1,6 @@
 # Canadian Active Living Environments (Can-ALE 2.0) - 2025 Update
 
-Welcome to the development site for the updated Can-ALE database. This project extends the original work (https://github.com/walkabillylab/Can-ALE/tree/main) to include the **2011, 2016, and 2021** census years.
+Welcome to the development site for the updated Can-ALE database. This project extends the [**Can-ALE Original Project**](https://github.com/walkabillylab/Can-ALE/tree/main) to include the **2011, 2016, and 2021** census years.
 
 # Introduction
 
