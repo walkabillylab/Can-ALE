@@ -35,9 +35,9 @@ The updated Active Living Environment (ALE) index for 2011, 2016, and 2021 is ba
 ---
 ## Geographic Unit of Analysis
 
-To ensure the index accurately reflects the environments that people actually live in, all measures were computed for the area within a 1-kilometer circular (Euclidean) buffer. This buffer was centered on a population-weighted centroid (*) rather than a simple geometric centroid. The Can-ALE measures were estimated within each buffer using a precise areal interpolation method at the Dissemination Block (DB) level, which assumes a uniform population distribution across the smaller DBs instead of the larger DAs. This analysis identifies all DBs that overlap with a buffer and determines the proportion of each DB's area that falls inside it.
+To ensure the index accurately reflects the environments that people actually live in, all measures were computed for the area within a 1-kilometer circular (Euclidean) buffer. This buffer was centered on a population-weighted centroid rather than a simple geometric centroid. The Can-ALE measures were estimated within each buffer using a precise areal interpolation method at the Dissemination Block (DB) level, which assumes a uniform population distribution across the smaller DBs instead of the larger DAs. This analysis identifies all DBs that overlap with a buffer and determines the proportion of each DB's area that falls inside it.
 
-*This weighted centroid represents the population's "center of mass" and was computed by taking the weighted average of the centroids of its constituent Dissemination Blocks (DBs), using the population of each block as its weight. In cases where a Dissemination Area had zero population, the geometric centroid was used instead to ensure complete coverage and prevent any area from being omitted.
+This weighted centroid represents the population's "center of mass" and was computed by taking the weighted average of the centroids of its constituent Dissemination Blocks (DBs), using the population of each block as its weight. In cases where a Dissemination Area had zero population, the geometric centroid was used instead to ensure complete coverage and prevent any area from being omitted.
 
 ---
 ## Methodology, Code Implementation and Results
@@ -47,28 +47,28 @@ This section details the methodology for calculating the measures, provides the 
 ### Weighted Population and Dwelling Densities
 
 Population and dwelling densities were calculated by analyzing a 1-kilometre buffer around the population-weighted centroid for each dissemination area (DA) within a given Canadian province, utilizing census data acquired with the `cancensus` R package. Population and dwelling counts from each intersecting Dissemination Block (DB) are then proportionally allocated according to the extent of their overlap with the buffer. These summed counts are subsequently divided by the area of the buffer to provide the final density estimates for each DA.
-* [**View the Code**]()
-* [**View the Results**]()
+* [**View the Code**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Codes/Final_Measures_Codes/DwellingPopulationDensity)
+* [**View the Results**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Data/DwellingPopulation)
 
 ### Transit Stops
 
 To determine the transit stop count within each DA, transit data for both the 2016 and 2021 census years were systematically acquired using automated R scripts from the TransitFeeds website, which offers a General Transit Feed Specification (GTFS) database (Transitfeeds, 2025) containing details on stop locations, transit schedules, routes, and trip directions. The code was written to select representative weekdays by excluding weekends, statutory holidays, and certain non-statutory holidays. The resulting transit stop locations were then arranged by province, transit agency, and categorized into Census Metropolitan Areas (CMAs) or non-CMA areas for subsequent analysis. In contrast to Can-ALE 1.0, this work included all stops found in both CMA and non-CMA areas. Finally, the transit stop counts for each DA were calculated by tallying the stops found within the 1-kilometer buffer around each DA’s population-weighted centroid.
-* [**View the Code**]()
-* [**View the Results**]()
+* [**View the Code**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Codes/Final_Measures_Codes/Transit)
+* [**View the Results**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Data/Transit)
 
 ### Intersections with ≥3 Legs density
 
 Intersection density metrics were calculated using Statistics Canada's road network shapefiles for 2011, 2016, and 2021. Limited-access roads (such as highways and freeways) were first excluded from each road file, after which an R script was developed to identify intersections with 3 or more legs. To improve processing speed and optimize the calculation, provincial road networks were subdivided into smaller 10 km by 10 km tiles. Within each of these tiles, intersections with three or more road segments were identified and counted, then attributed to each DA buffer. Finally, the intersection densities were aggregated and exported separately for each province.
-* [**View the Code**]()
-* [**View the Results**]()
+* [**View the Code**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Codes/Final_Measures_Codes/IntersectionDensity)
+* [**View the Results**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Data/IntersectionDensity)
 
 ### Points of Interest
 
 For the Points of Interest (POI) calculation, OpenStreetMap (OSM) was chosen as the primary data source for the 2006, 2011, 2016, and 2021 census years (Geofabrik, 2025). OSM contains a wide variety of mapped features (e.g., schools, shops, parks) as both points and polygons. It offers valuable data for unique, small-scale environmental features, like benches and fountains, which are typically challenging to map but are conceptually important for active living studies. However, due to insufficient data for the 2006 census year, this year was not included in the Can-ALE 2.0 project's ALE calculation index.
 
 For the 2011, 2016, and 2021 census years, the first step involved converting polygon-type POIs into centroids to create a standardized data format; this was then joined with the point shapefile to produce a single POI shapefile. Second, POI categories unrelated to active living environment variables were removed based on predefined OSM classification codes. Third, two types of weighting methods were applied to the POIs in the calculation process. The first weight was applied to ensure that POIs closer to a Dissemination Area's population-weighted centroid were more likely to be used by people than those farther away. This was accomplished by applying the negative exponential decay function ($1.0126e^{-0.0013x}$) as used by Zhao et al. (2003), where x is the distance in meters up to a 1000-meter threshold. The second weighting method, applied to increase the robustness of the counted POIs, consisted of weighting each POI type on a scale from 1 to 4 (1 = lower relationship with active living behavior; 4 = higher relationship). Table 2 provides a sample of the weighing coefficients used. Finally, the count of POIs within 1 kilometer of the population-weighted centroid was determined using spatial intersection for both weighted and un-weighted POIs. The final POI counts served as an indicator of local destination availability that is supportive of active living.
-* [**View the Code**]()
-* [**View the Results**]()
+* [**View the Code**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Codes/Final_Measures_Codes/POI)
+* [**View the Results**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Data/POI)
 
 ### Table 2. POI Weighting System
 
