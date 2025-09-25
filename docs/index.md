@@ -1,6 +1,6 @@
 # Canadian Active Living Environments (Can-ALE 2.0) - 2025 Update
 
-Welcome to the development site for the updated Can-ALE database. This project extends the [**Can-ALE Original Project**](https://github.com/walkabillylab/Can-ALE/tree/main) to include the **2011, 2016, and 2021** census years.
+Welcome to the official repository for the Canadian Active Living Environments (Can-ALE) 2.0 project. . This project extends the [**Can-ALE Original Project**](https://github.com/walkabillylab/Can-ALE/tree/main) to include the **2011, 2016, and 2021** census years.
 
 # Introduction
 
@@ -48,7 +48,7 @@ Population and dwelling densities were calculated by analyzing a 1-kilometre buf
 
 ### Transit Stops
 
-To determine the transit stop count within each DA, transit data for both the 2016 and 2021 census years were systematically acquired using automated R scripts from the TransitFeeds website, which offers a General Transit Feed Specification (GTFS) database (Transitfeeds, 2025) containing details on stop locations, transit schedules, routes, and trip directions. The code was written to select representative weekdays by excluding weekends, statutory holidays, and certain non-statutory holidays. The resulting transit stop locations were then arranged by province, transit agency, and categorized into Census Metropolitan Areas (CMAs) or non-CMA areas for subsequent analysis. In contrast to Can-ALE 1.0, this work included all stops found in both CMA and non-CMA areas. Finally, the transit stop counts for each DA were calculated by tallying the stops found within the 1-kilometer buffer around each DA’s population-weighted centroid.
+To determine the transit stop count within each DA, transit data for both the 2016 and 2021 census years were systematically acquired using automated R scripts from the TransitFeeds website, which offers a General Transit Feed Specification (GTFS) database containing details on stop locations, transit schedules, routes, and trip directions. The code was written to select representative weekdays by excluding weekends, statutory holidays, and certain non-statutory holidays. The resulting transit stop locations were then arranged by province, transit agency, and categorized into Census Metropolitan Areas (CMAs) or non-CMA areas for subsequent analysis. In contrast to Can-ALE 1.0, this work included all stops found in both CMA and non-CMA areas. Finally, the transit stop counts for each DA were calculated by tallying the stops found within the 1-kilometer buffer around each DA’s population-weighted centroid.
 * [**View the Code**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Codes/Final_Measures_Codes/Transit)
 * [**View the Results**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Data/Transit)
 
@@ -60,9 +60,9 @@ Intersection density metrics were calculated using Statistics Canada's road netw
 
 ### Points of Interest
 
-For the Points of Interest (POI) calculation, OpenStreetMap (OSM) was chosen as the primary data source for the 2006, 2011, 2016, and 2021 census years (Geofabrik, 2025). OSM contains a wide variety of mapped features (e.g., schools, shops, parks) as both points and polygons. It offers valuable data for unique, small-scale environmental features, like benches and fountains, which are typically challenging to map but are conceptually important for active living studies. However, due to insufficient data for the 2006 census year, this year was not included in the Can-ALE 2.0 project's ALE calculation index.
+For the Points of Interest (POI) calculation, OpenStreetMap (OSM) was chosen as the primary data source for the 2006, 2011, 2016, and 2021 census years. OSM contains a wide variety of mapped features (e.g., schools, shops, parks) as both points and polygons. It offers valuable data for unique, small-scale environmental features, like benches and fountains, which are typically challenging to map but are conceptually important for active living studies. However, due to insufficient data for the 2006 census year, this year was not included in the Can-ALE 2.0 project's ALE calculation index.
 
-For the 2011, 2016, and 2021 census years, the first step involved converting polygon-type POIs into centroids to create a standardized data format; this was then joined with the point shapefile to produce a single POI shapefile. Second, POI categories unrelated to active living environment variables were removed based on predefined OSM classification codes. Third, two types of weighting methods were applied to the POIs in the calculation process. The first weight was applied to ensure that POIs closer to a Dissemination Area's population-weighted centroid were more likely to be used by people than those farther away. This was accomplished by applying the negative exponential decay function ($1.0126e^{-0.0013x}$) as used by Zhao et al. (2003), where x is the distance in meters up to a 1000-meter threshold. The second weighting method, applied to increase the robustness of the counted POIs, consisted of weighting each POI type on a scale from 1 to 4 (1 = lower relationship with active living behavior; 4 = higher relationship). Table 2 provides a sample of the weighing coefficients used. Finally, the count of POIs within 1 kilometer of the population-weighted centroid was determined using spatial intersection for both weighted and un-weighted POIs. The final POI counts served as an indicator of local destination availability that is supportive of active living.
+For the 2011, 2016, and 2021 census years, the first step involved converting polygon-type POIs into centroids to create a standardized data format; this was then joined with the point shapefile to produce a single POI shapefile. Second, POI categories unrelated to active living environment variables were removed based on predefined OSM classification codes. Third, two types of weighting methods were applied to the POIs in the calculation process. The first weight was applied to ensure that POIs closer to a Dissemination Area's population-weighted centroid were more likely to be used by people than those farther away. This was accomplished by applying the negative exponential decay function ( $1.0126e^{-0.0013x}$ ), where x is the distance in meters up to a 1000-meter threshold. The second weighting method, applied to increase the robustness of the counted POIs, consisted of weighting each POI type on a scale from 1 to 4 (1 = lower relationship with active living behavior; 4 = higher relationship). Table 2 provides a sample of the weighing coefficients used. Finally, the count of POIs within 1 kilometer of the population-weighted centroid was determined using spatial intersection for both weighted and un-weighted POIs. The final POI counts served as an indicator of local destination availability that is supportive of active living.
 * [**View the Code**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Codes/Final_Measures_Codes/POI)
 * [**View the Results**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Data/POI)
 
@@ -131,6 +131,9 @@ The final Can-ALE indexes for each year are available via the links below:
 | Clothes | Kiosk | Stationery | - |
 | Comms Tower | Laundry | Telephone | - |
 | Computer Shop | Lighthouse | Tourist Info | - |
+
+
+
 
 
 
