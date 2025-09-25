@@ -44,19 +44,19 @@ This section details the methodology for calculating the measures, provides the 
 
 Population and dwelling densities were calculated by analyzing a 1-kilometre buffer around the population-weighted centroid for each dissemination area (DA) within a given Canadian province, utilizing census data acquired with the `cancensus` R package. Population and dwelling counts from each intersecting Dissemination Block (DB) are then proportionally allocated according to the extent of their overlap with the buffer. These summed counts are subsequently divided by the area of the buffer to provide the final density estimates for each DA.
 * [**View the Code**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Codes/Final_Measures_Codes/DwellingPopulationDensity)
-* [**View the Results**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Data/DwellingPopulation)
+* [**View the Results**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Results/DwellingPopulation)
 
 ### Transit Stops
 
 To determine the transit stop count within each DA, transit data for both the 2016 and 2021 census years were systematically acquired using automated R scripts from the TransitFeeds website, which offers a General Transit Feed Specification (GTFS) database containing details on stop locations, transit schedules, routes, and trip directions. The code was written to select representative weekdays by excluding weekends, statutory holidays, and certain non-statutory holidays. The resulting transit stop locations were then arranged by province, transit agency, and categorized into Census Metropolitan Areas (CMAs) or non-CMA areas for subsequent analysis. In contrast to Can-ALE 1.0, this work included all stops found in both CMA and non-CMA areas. Finally, the transit stop counts for each DA were calculated by tallying the stops found within the 1-kilometer buffer around each DA’s population-weighted centroid.
 * [**View the Code**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Codes/Final_Measures_Codes/Transit)
-* [**View the Results**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Data/Transit)
+* [**View the Results**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Results/Transit)
 
 ### Intersections with ≥3 Legs density
 
 Intersection density metrics were calculated using Statistics Canada's road network shapefiles for 2011, 2016, and 2021. Limited-access roads (such as highways and freeways) were first excluded from each road file, after which an R script was developed to identify intersections with 3 or more legs. To improve processing speed and optimize the calculation, provincial road networks were subdivided into smaller 10 km by 10 km tiles. Within each of these tiles, intersections with three or more road segments were identified and counted, then attributed to each DA buffer. Finally, the intersection densities were aggregated and exported separately for each province.
 * [**View the Code**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Codes/Final_Measures_Codes/IntersectionDensity)
-* [**View the Results**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Data/IntersectionDensity)
+* [**View the Results**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Results/IntersectionDensity)
 
 ### Points of Interest
 
@@ -64,7 +64,7 @@ For the Points of Interest (POI) calculation, OpenStreetMap (OSM) was chosen as 
 
 For the 2011, 2016, and 2021 census years, the first step involved converting polygon-type POIs into centroids to create a standardized data format; this was then joined with the point shapefile to produce a single POI shapefile. Second, POI categories unrelated to active living environment variables were removed based on predefined OSM classification codes. Third, two types of weighting methods were applied to the POIs in the calculation process. The first weight was applied to ensure that POIs closer to a Dissemination Area's population-weighted centroid were more likely to be used by people than those farther away. This was accomplished by applying the negative exponential decay function ( $1.0126e^{-0.0013x}$ ), where x is the distance in meters up to a 1000-meter threshold. The second weighting method, applied to increase the robustness of the counted POIs, consisted of weighting each POI type on a scale from 1 to 4 (1 = lower relationship with active living behavior; 4 = higher relationship). Table 2 provides a sample of the weighing coefficients used. Finally, the count of POIs within 1 kilometer of the population-weighted centroid was determined using spatial intersection for both weighted and un-weighted POIs. The final POI counts served as an indicator of local destination availability that is supportive of active living.
 * [**View the Code**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Codes/Final_Measures_Codes/POI)
-* [**View the Results**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Data/POI)
+* [**View the Results**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Results/POI)
 
 ### Table 2. POI Weighting System
 
@@ -105,7 +105,7 @@ For the 2011, 2016, and 2021 census years, the first step involved converting po
 ## Results
 
 The final Can-ALE indexes and classes for each year are available via the links below:
-* [**Link to Final Can-ALE Files**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Data/ALE_Index_Class)
+* [**Link to Final Can-ALE Files**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Results/ALE_Index_Class)
 * [**Link to Final Can-ALE Analysis Codes**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Codes/Can-ALE%20Analysis%20Codes)
 # Appendix
 
