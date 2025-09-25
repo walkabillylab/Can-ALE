@@ -22,13 +22,6 @@ The analysis uses three main datasets for a given census year:
     * **2016**: `lrnf000r16a_e.shp`
     * **2021**: `lrnf000r21a_e.shp`
 
-### Processing Environment
-
-The R environment is set up for high-performance computing to handle the intensive tasks:
-
-* **Parallel Processing**: The script uses the `future` package to run calculations on multiple CPU cores, which greatly speeds up the process.
-* **Coordinate System**: All data is transformed to EPSG:3347 (Statistics Canada Lambert) to ensure accurate distance and area calculations across Canada.
-
 ---
 ## Core Methodology
 
