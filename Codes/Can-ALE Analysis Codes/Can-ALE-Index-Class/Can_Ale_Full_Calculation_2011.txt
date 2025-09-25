@@ -1,0 +1,60 @@
+
+# Load Necessary Libraries
+
+library(readxl)
+library(dplyr)
+library(writexl)
+library(Kmedians)
+
+# Define the Base Folder and merged all measures 
+base_path <- "V:/CanALE/Data/ALE_Index/ALE_2011/"
+merged_file <- paste0(base_path, "merged_all_2011.xlsx")
+
+# Read the merged data
+merged_data <- read_excel(merged_file)
+
+# Compute Z-scores for each measure
+z_data <- merged_data %>%
+  mutate(
+    z_dwel  = (dwel_density - mean(dwel_density, na.rm = TRUE)) / sd(dwel_density, na.rm = TRUE),
+    z_int   = (int_density - mean(int_density, na.rm = TRUE)) / sd(int_density, na.rm = TRUE),
+    z_poi   = (poi - mean(poi, na.rm = TRUE)) / sd(poi, na.rm = TRUE),
+  )
+
+# Prepare data for clustering
+mat_ale <- as.matrix(z_data %>% select(z_dwel, z_int, z_poi))
+# Identify rows with complete data for these three measures.
+complete_idx_ale <- complete.cases(mat_ale)
+mat_ale_complete <- mat_ale[complete_idx_ale, ]
+
+
+
+# Perform K-Medians clustering using the Kmedians package
+km_ale <- Kmedians(mat_ale_complete, 5)
+
+
+# Integrate Cluster Assignments into the Data and a new column is created in our z_data for the cluster labels.
+z_data$ALE_index_class <- NA_integer_
+z_data$ALE_index_class[complete_idx_ale] <- km_ale$bestresult$cluster
+
+
+
+# Reorder Cluster Labels ("1" = Lowest ALE and "5" = Highest ALE)
+
+z_data <- z_data %>%
+  mutate(ALE_index = z_dwel + z_int + z_poi)
+cluster_means <- z_data %>%
+  group_by(ALE_index_class) %>%
+  summarise(mean_index = mean(ALE_index, na.rm = TRUE)) %>%
+  filter(!is.na(ALE_index_class)) %>%
+  arrange(mean_index)
+old_labels <- cluster_means$ALE_index_class
+new_labels <- seq_along(old_labels)
+map_ale <- setNames(new_labels, old_labels)
+z_data$ALE_index_class <- map_ale[ as.character(z_data$ALE_index_class) ]
+
+
+
+# Export to Excel
+output_file <- paste0(base_path, "ALE_Index_2011.xlsx")
+write_xlsx(z_data, output_file)
