@@ -28,9 +28,9 @@ This final stage uses the organized **stops.txt** files and geographic DA data t
 
 In addition to the processed GTFS files from Step 2, this stage requires two key spatial datasets:
 
-* **DA Shapefile**: A national shapefile containing the boundaries for all 2016 Dissemination Areas.
-* **Population-Weighted Centroids**: A pre-calculated file containing a single, population-weighted centroid for each DA, which more accurately represents where people live.
-
+* **DA Shapefile**: A national shapefile containing the boundaries for all Dissemination Areas, which is available [**here**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Data/DAUID).
+* **Population-Weighted Centroids**: A pre-calculated file containing a single, population-weighted centroid for each DA, which is available [**here**](https://github.com/walkabillylab/Can-ALE/tree/Can-ALE-2.0/Data/PopWeighted_Centroid).
+  
 ### 3.2 Provincial Data Preparation & Buffer Generation
 
 The script loads the national DA boundary and centroid files. It processes the data one province at a time, filtering the datasets for the province being analyzed. All data is re-projected to the Statistics Canada Lambert projection (EPSG:3347) for accurate measurements. Next, a **1-kilometer circular buffer** is created around each population-weighted centroid. This buffer serves as the catchment area for counting transit stops.
