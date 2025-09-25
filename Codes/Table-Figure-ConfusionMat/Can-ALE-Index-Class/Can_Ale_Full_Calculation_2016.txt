@@ -1,0 +1,79 @@
+# Load the required libraries
+
+library(readxl)
+library(dplyr)
+library(writexl)
+library(Kmedians)
+
+# Define the Base Folder and merged all measures 
+base_path <- "V:/CanALE/Data/ALE_Index/ALE_2016/"
+merged_file <- paste0(base_path, "merged_all_2016.xlsx")
+
+# Read the merged data
+merged_data <- read_excel(merged_file)
+
+# Compute Z-scores for each measure
+
+z_data <- merged_data %>%
+  mutate(
+    z_dwel  = (dwel_density - mean(dwel_density, na.rm = TRUE)) / sd(dwel_density, na.rm = TRUE),
+    z_int   = (int_density - mean(int_density, na.rm = TRUE)) / sd(int_density, na.rm = TRUE),
+    z_poi_count   = (poi_count - mean(poi_count, na.rm = TRUE)) / sd(poi_count, na.rm = TRUE),
+    z_trstop = (trstop_count - mean(trstop_count, na.rm = TRUE)) / sd(trstop_count, na.rm = TRUE)
+  )
+
+# Prepare data for clustering
+#    ALE_index_class
+mat_ale <- as.matrix(z_data %>% select(z_dwel, z_int, z_poi_count))
+# Identify rows with complete data for these three measures.
+complete_idx_ale <- complete.cases(mat_ale)
+mat_ale_complete <- mat_ale[complete_idx_ale, ]
+
+#    ALE_transit_index_class
+mat_transit <- as.matrix(z_data %>% select(z_dwel, z_int, z_poi_count, z_trstop))
+# Identify rows with complete data for these four measures.
+complete_idx_transit <- complete.cases(mat_transit)
+mat_transit_complete <- mat_transit[complete_idx_transit, ]
+
+# Perform K-Medians clustering using the Kmedians package
+
+km_ale <- Kmedians(mat_ale_complete, 5)
+km_transit <- Kmedians(mat_transit_complete, 5)
+
+# Integrate Cluster Assignments into the Data and a new column is created in our z_data for the cluster labels.
+z_data$ALE_index_class <- NA_integer_
+z_data$ALE_index_class[complete_idx_ale] <- km_ale$bestresult$cluster
+
+z_data$ALE_transit_index_class <- NA_integer_
+z_data$ALE_transit_index_class[complete_idx_transit] <- km_transit$bestresult$cluster
+
+# Reorder Cluster Labels "1" = Lowest ALE and "5" = Highest ALE
+z_data <- z_data %>%
+  mutate(ALE_index = z_dwel + z_int + z_poi_count)
+# ALE_index_class:
+cluster_means <- z_data %>%
+  group_by(ALE_index_class) %>%
+  summarise(mean_index = mean(ALE_index, na.rm = TRUE)) %>%
+  filter(!is.na(ALE_index_class)) %>%
+  arrange(mean_index)
+old_labels <- cluster_means$ALE_index_class
+new_labels <- seq_along(old_labels)
+map_ale <- setNames(new_labels, old_labels)
+z_data$ALE_index_class <- map_ale[ as.character(z_data$ALE_index_class) ]
+
+# ALE_transit_index_class
+z_data <- z_data %>%
+  mutate(ALE_transit_index = z_dwel + z_int + z_poi_count + z_trstop)
+cluster_means_transit <- z_data %>%
+  group_by(ALE_transit_index_class) %>%
+  summarise(mean_index = mean(ALE_transit_index, na.rm = TRUE)) %>%
+  filter(!is.na(ALE_transit_index_class)) %>%
+  arrange(mean_index)
+old_labels_transit <- cluster_means_transit$ALE_transit_index_class
+new_labels_transit <- seq_along(old_labels_transit)
+map_transit <- setNames(new_labels_transit, old_labels_transit)
+z_data$ALE_transit_index_class <- map_transit[ as.character(z_data$ALE_transit_index_class) ]
+
+# Export to Excel
+output_file <- paste0(base_path, "ALE_Index_2016.xlsx")
+write_xlsx(z_data, output_file)

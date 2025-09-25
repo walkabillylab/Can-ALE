@@ -1,0 +1,35 @@
+# Load necessary libraries
+library(readxl)
+library(dplyr)
+library(writexl)
+
+# Define the base folder path (We need separate folders for each year and the calculated measures should be placed in these folders) 
+base_path <- "V:/CanALE/Data/ALE_Index/ALE_2011/"
+
+# 1) Read the base file (DA_2011.xlsx) containing all DAUIDs, then convert DAUID to character (We need raw excel data of DAUID whcih is available in Data folder)
+da_data <- read_excel(paste0(base_path, "DA_2011.xlsx")) %>%
+  mutate(DAUID = as.character(DAUID))
+
+# 2) Read the other files and converting their DAUIDs to character
+dw_data <- read_excel(paste0(base_path, "dw_2011.xlsx")) %>%
+  mutate(DAUID = as.character(DAUID))
+
+int_data <- read_excel(paste0(base_path, "int_2011.xlsx")) %>%
+  mutate(DAUID = as.character(DAUID))
+
+poi_data <- read_excel(paste0(base_path, "poi_2011.xlsx")) %>%
+  mutate(DAUID = as.character(DAUID))
+
+commute_data <- read_excel(paste0(base_path, "commute_2011.xlsx")) %>%
+  mutate(DAUID = as.character(DAUID))
+
+# 3) Merge the files using DAUID 
+merged_data <- da_data %>%
+  left_join(dw_data, by = "DAUID") %>%
+  left_join(int_data, by = "DAUID") %>%
+  left_join(poi_data, by = "DAUID") %>%
+  left_join(commute_data, by = "DAUID")
+
+# 4) Write the merged data to an Excel file in the same folder
+output_file <- paste0(base_path, "merged_all_2011.xlsx")
+write_xlsx(merged_data, output_file)
