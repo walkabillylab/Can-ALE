@@ -1,0 +1,147 @@
+library(cancensus)
+library(sf)
+library(dplyr)
+library(future)
+library(future.apply)
+library(writexl)
+library(purrr)
+
+# 1. SETUP CACHE FOLDER & API KEY
+
+api_key    <- "CensusMapper_723e3f4e60999d1127c93026d17c3b50"
+cache_path <- "V:/CanALE/cache"
+set_cancensus_api_key(api_key, install = TRUE, overwrite = TRUE)
+set_cancensus_cache_path(cache_path, install = TRUE, overwrite = TRUE)
+
+workers    <- 5
+plan(multisession, workers = workers)
+sf::sf_use_s2(FALSE)
+
+# 2. DEFINE CENTROID PATHS AND PROVINCE LIST
+centroid_path <- "V:/CanALE/Data/PopWeighted_Centroid/DA_2016_hybrid_centroids_Canada.gpkg"
+out_xlsx      <- "V:/CanALE/Data/WalkActiveRate/commute_rates_CA16_Canada_buffer1km_weighted.xlsx"
+
+province_pruids <- c("10", "11", "12", "13", "24", "35", "46", "47", "48", "59", "60", "61", "62")
+
+# Name the vectors so the output columns use these names directly
+commute_vectors_2016 <- c(
+  total_labour_force = "v_CA16_5792",  # Total
+  walked             = "v_CA16_5804",  # Walked
+  bicycled           = "v_CA16_5807",  # Bicycle
+  transit            = "v_CA16_5801"   # Public transit
+)
+
+# 3. LOAD ALL CENTROIDS & PROVINCES PRUID
+
+All_Centroids_Canada <- st_read(centroid_path, quiet = TRUE)
+
+all_provinces_agg <- list()
+
+# 4. START LOOPING THROUGH EACH PROVINCE
+for (pruid in province_pruids) {
+  message(sprintf("\n---\nProcessing PRUID: %s\n---", pruid))
+  
+  # Download DA geometries + commuting counts
+  da_sf <- get_census(
+    dataset    = "CA16",
+    regions    = list(PR = pruid),
+    vectors    = commute_vectors_2016,  # 
+    level      = "DA",
+    geo_format = "sf",
+    use_cache  = TRUE
+  )
+  
+  if (is.null(da_sf) || nrow(da_sf) == 0) {
+    message("No data found for PRUID: ", pruid, ". Skipping.")
+    next
+  }
+  
+  # Ensure numeric vs character
+  da_sf <- da_sf %>%
+    mutate(across(all_of(names(commute_vectors_2016)), ~ as.numeric(.)))
+  
+  sc_lambert <- 3347
+  da_lam     <- st_transform(da_sf, sc_lambert)
+  
+  # Pre calculated original DA areas
+  da_lam$da_area <- st_area(da_lam)
+  
+  # Create buffers from pre-calculated centroids
+  centroids <- All_Centroids_Canada %>%
+    mutate(PRUID = substr(DAUID, 1, 2)) %>%
+    filter(PRUID == pruid) %>%
+    st_transform(sc_lambert)
+  
+  buffers <- st_buffer(centroids, 1000)
+  
+  # Pre calculated intersection candidates
+  
+  all_candidate_indices <- st_intersects(buffers, da_lam)
+  
+  # Parallel area-weighting
+  buffer_worker <- function(i) {
+    buf <- buffers[i, ]
+    id  <- buf$DAUID
+    
+    candidate_indices <- all_candidate_indices[[i]]
+    if (length(candidate_indices) == 0) {
+      return(data.frame(GeoUID_buf = id, walk = 0, bike = 0, trans = 0, total = 0))
+    }
+    candidate_das <- da_lam[candidate_indices, ]
+    
+    inter <- suppressWarnings(st_intersection(candidate_das, buf))
+    if (nrow(inter) == 0) {
+      return(data.frame(GeoUID_buf = id, walk = 0, bike = 0, trans = 0, total = 0))
+    }
+    
+    inter <- inter %>%
+      mutate(
+        part_area = st_area(geometry),
+        frac      = pmin(as.numeric(part_area / da_area), 1)
+      )
+    
+    agg <- inter %>%
+      summarise(
+        walk  = sum(walked   * frac, na.rm = TRUE),
+        bike  = sum(bicycled * frac, na.rm = TRUE),
+        trans = sum(transit  * frac, na.rm = TRUE),
+        total = sum(total_labour_force * frac, na.rm = TRUE)
+      )
+    
+    data.frame(
+      GeoUID_buf = id,
+      walk  = agg$walk,
+      bike  = agg$bike,
+      trans = agg$trans,
+      total = agg$total
+    )
+  }
+  
+  agg_df <- future_lapply(seq_len(nrow(buffers)), buffer_worker, future.seed = FALSE) |>
+    bind_rows()
+  
+  all_provinces_agg[[pruid]] <- agg_df
+}
+
+# 5) COMBINE & FINALIZE RESULTS
+final_df <- bind_rows(all_provinces_agg)
+
+final <- final_df %>%
+  mutate(
+    active_transport_count = walk + bike,
+    all_modes_count        = walk + bike + trans,
+    walk_rate              = ifelse(total == 0, 0, walk / total),
+    active_transport_rate  = ifelse(total == 0, 0, active_transport_count / total),
+    transit_rate           = ifelse(total == 0, 0, trans / total),
+    all_modes_rate         = ifelse(total == 0, 0, all_modes_count / total)
+  ) %>%
+  select(
+    DAUID = GeoUID_buf,
+    walk_rate, active_transport_rate, transit_rate, all_modes_rate,
+    total_labour_force = total,
+    walk_count = walk, bike_count = bike, transit_count = trans,
+    active_transport_count, all_modes_count
+  )
+
+# 6) Export to Excel
+write_xlsx(final, out_xlsx)
