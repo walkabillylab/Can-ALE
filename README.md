@@ -109,6 +109,7 @@ For the 2011, 2016, and 2021 census years, the first step involved converting po
 ## Results
 
 The final Can-ALE indexes and classes for each year are available via the links below:
+* [**Link to Can-ALE Maps for four Canadian cities (Montreal, Hamilton, Calgary, and Saskatoon)**](https://github.com/walkabillylab/Can-ALE/tree/main/Results/ALE-Class-Map)
 * [**Link to Final Can-ALE Files**](https://github.com/walkabillylab/Can-ALE/tree/main/Results/Can-ALE)
 * [**Link to Final Can-ALE Analysis Codes**](https://github.com/walkabillylab/Can-ALE/tree/main/Codes/Can-ALE%20Analysis%20Codes)
 # Appendix
