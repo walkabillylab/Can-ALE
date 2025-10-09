@@ -138,7 +138,11 @@ The final Can-ALE indexes and classes for each year are available via the links 
 | Computer Shop | Lighthouse | Tourist Info | - |
 
 
+## Citation
 
+We ask that you cite the following if you are using Can-ALE in published work.
+
+Ghasedi, M., Fuller, D., Achot, G., Ross, N., 2025. Canadian Active Living Environments Database (Can-ALE 2.0) User Manual & Technical Document. Department of Community Health and Epidemiology, University of Saskatchewan and Department of Public Health Sciences, Queens University.
 
 
 
