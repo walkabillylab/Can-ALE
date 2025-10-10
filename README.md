@@ -28,10 +28,10 @@ The updated Active Living Environment (ALE) index for 2011, 2016, and 2021 is ba
 
 | Measure | Definition | Data Source |
 | :--- | :--- | :--- |
-| **Weighted population density** | Population per square kilometer of the DA buffer, aggregated from each DA within the polygonal buffer and weighted according to the proportion of the DA within the buffer. | Census (Statistics Canada) |
-| **Weighted dwelling density** | Dwellings per square kilometer of the DA buffer, aggregated from each DA within the polygonal buffer and weighted according to the proportion of the DA within the buffer. | Census (Statistics Canada) |
+| **Weighted population density** | The number of people per square kilometer within a 1-km circle centered on a Dissemination Area's (DA) population-weighted centroid. | Census (Statistics Canada) |
+| **Weighted dwelling density** | The number of dwelling per square kilometer within a 1-km circle centered on a Dissemination Area's (DA) population-weighted centroid. | Census (Statistics Canada) |
 | **Transit Stops** | The number of available transit stops within 1 kilometer of population weighted centroid of the DA. | General Transit Feed Specification (GTFS) |
-| **Intersections with ≥3 Legs density** | The number of ≥ three-way intersections on roads per square kilometer, excluding roads classified as motorways (highways, freeways) or slip roads (e.g., highway entrance and exit ramps). | Road Network File (Statistics Canada) |
+| **Intersections with ≥3 Legs density** | The number of ≥ three-way intersections on roads within 1 kilometer of population weighted centroid of the DA, excluding roads classified as motorways (highways, freeways) or slip roads (e.g., highway entrance and exit ramps) | Road Network File (Statistics Canada) |
 | **Weighted Points of interest** | The number of points of interest (e.g., libraries, schools, hospitals) within 1 kilometer of population weighted centroid of the DA and weighted according to their importance and distance from weighted centroid of the DA. | OpenStreetMap |
 
 ---
