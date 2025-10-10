@@ -136,7 +136,8 @@ You can find the final Can-ALE indexes and classes for each year separately thro
 
 # Appendix
 
-### Table S1 Points of Interest (POIs) with a Weight of 1
+### Table S1. Points of Interest (POIs) with a Weight of 1
+ 
 | Column 1 | Column 2 | Column 3 | Column 4 |
 | :--- | :--- | :--- | :--- |
 | Alpine Hut | Courthouse | Memorial | Tower |
