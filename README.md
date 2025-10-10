@@ -110,9 +110,6 @@ For the 2011, 2016, and 2021 census years, the first step involved converting po
 
 The spatial distribution of ALE categories across four Canadian cities, including Montreal, Hamilton, Calgary, and Saskatoon, in 2021 is presented below:
 
-
-The spatial distribution of ALE categories across four Canadian cities, including Montreal, Hamilton, Calgary, and Saskatoon in 2021 is presented below.
-
 <br>
 
 <div align="center">
