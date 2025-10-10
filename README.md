@@ -111,19 +111,19 @@ For the 2011, 2016, and 2021 census years, the first step involved converting po
 The spatial distribution of ALE categories across four Canadian cities, including Montreal, Hamilton, Calgary, and Saskatoon, in 2021 is presented below:
 
 
-The **spatial distribution of ALE categories** across four Canadian cities—Montreal, Hamilton, Calgary, and Saskatoon—in 2021 is presented below.
+The spatial distribution of ALE categories across four Canadian cities, including Montreal, Hamilton, Calgary, and Saskatoon in 2021 is presented below.
 
 <br>
 
 <div align="center">
   <table>
     <tr>
-      <td><img src="Results/ALE-Class-Map/montreal_ALE_2021.png" alt="Can-ALE Map of Montreal" width="250"></td>
-      <td><img src="Results/ALE-Class-Map/hamilton_ALE_2021.png" alt="Can-ALE Map of Hamilton" width="250"></td>
+      <td><img src="Results/ALE-Class-Map/montreal_ALE_2021.jpg" alt="Can-ALE Map of Montreal" width="250"></td>
+      <td><img src="Results/ALE-Class-Map/hamilton_ALE_2021.jpg" alt="Can-ALE Map of Hamilton" width="250"></td>
     </tr>
     <tr>
-      <td><img src="Results/ALE-Class-Map/calgary_ALE_2021.png" alt="Can-ALE Map of Calgary" width="250"></td>
-      <td><img src="Results/ALE-Class-Map/saskatoon_ALE_2021.png" alt="Can-ALE Map of Saskatoon" width="250"></td>
+      <td><img src="Results/ALE-Class-Map/calgary_ALE_2021.jpg" alt="Can-ALE Map of Calgary" width="250"></td>
+      <td><img src="Results/ALE-Class-Map/saskatoon_ALE_2021.jpg" alt="Can-ALE Map of Saskatoon" width="250"></td>
     </tr>
   </table>
 </div>
