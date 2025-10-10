@@ -118,12 +118,12 @@ The spatial distribution of ALE categories across four Canadian cities, includin
 <div align="center">
   <table>
     <tr>
-      <td><img src="https://raw.githubusercontent.com/walkabillylab/Can-ALE/main/Results/ALE-Class-Map/montreal_ALE_2021.jpg" alt="Can-ALE Map of Montreal" width="400"></td>
-      <td><img src="https://raw.githubusercontent.com/walkabillylab/Can-ALE/main/Results/ALE-Class-Map/hamilton_ALE_2021.jpg" alt="Can-ALE Map of Hamilton" width="400"></td>
+      <td><img src="https://raw.githubusercontent.com/walkabillylab/Can-ALE/main/Results/ALE-Class-Map/montreal_ALE_2021.jpg" alt="Can-ALE Map of Montreal" width="500"></td>
+      <td><img src="https://raw.githubusercontent.com/walkabillylab/Can-ALE/main/Results/ALE-Class-Map/hamilton_ALE_2021.jpg" alt="Can-ALE Map of Hamilton" width="500"></td>
     </tr>
     <tr>
-      <td><img src="https://raw.githubusercontent.com/walkabillylab/Can-ALE/main/Results/ALE-Class-Map/calgary_ALE_2021.jpg" alt="Can-ALE Map of Calgary" width="400"></td>
-      <td><img src="https://raw.githubusercontent.com/walkabillylab/Can-ALE/main/Results/ALE-Class-Map/saskatoon_ALE_2021.jpg" alt="Can-ALE Map of Saskatoon" width="400"></td>
+      <td><img src="https://raw.githubusercontent.com/walkabillylab/Can-ALE/main/Results/ALE-Class-Map/calgary_ALE_2021.jpg" alt="Can-ALE Map of Calgary" width="500"></td>
+      <td><img src="https://raw.githubusercontent.com/walkabillylab/Can-ALE/main/Results/ALE-Class-Map/saskatoon_ALE_2021.jpg" alt="Can-ALE Map of Saskatoon" width="500"></td>
     </tr>
   </table>
 </div>
