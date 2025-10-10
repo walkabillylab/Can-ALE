@@ -108,7 +108,31 @@ For the 2011, 2016, and 2021 census years, the first step involved converting po
 ---
 ## Results
 
-The final Can-ALE indexes and classes for each year are available via the links below:
+The spatial distribution of ALE categories across four Canadian cities, including Montreal, Hamilton, Calgary, and Saskatoon, in 2021 is presented below:
+
+
+The **spatial distribution of ALE categories** across four Canadian cities—Montreal, Hamilton, Calgary, and Saskatoon—in 2021 is presented below.
+
+<br>
+
+<div align="center">
+  <table>
+    <tr>
+      <td><img src="Results/ALE-Class-Map/Montreal_ALE_2021.png" alt="Can-ALE Map of Montreal" width="250"></td>
+      <td><img src="Results/ALE-Class-Map/Hamilton_ALE_2021.png" alt="Can-ALE Map of Hamilton" width="250"></td>
+    </tr>
+    <tr>
+      <td><img src="Results/ALE-Class-Map/Calgary_ALE_2021.png" alt="Can-ALE Map of Calgary" width="250"></td>
+      <td><img src="Results/ALE-Class-Map/Saskatoon_ALE_2021.png" alt="Can-ALE Map of Saskatoon" width="250"></td>
+    </tr>
+  </table>
+</div>
+
+<br>
+
+
+You can find the final Can-ALE indexes and classes for each year separately through the links provided below.
+
 * [**Link to Can-ALE Maps for four Canadian cities (Montreal, Hamilton, Calgary, and Saskatoon)**](https://github.com/walkabillylab/Can-ALE/tree/main/Results/ALE-Class-Map)
 * [**Link to Final Can-ALE Files**](https://github.com/walkabillylab/Can-ALE/tree/main/Results/Can-ALE)
 * [**Link to Final Can-ALE Analysis Codes**](https://github.com/walkabillylab/Can-ALE/tree/main/Codes/Can-ALE%20Analysis%20Codes)
