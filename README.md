@@ -118,12 +118,12 @@ The **spatial distribution of ALE categories** across four Canadian cities—Mon
 <div align="center">
   <table>
     <tr>
-      <td><img src="Results/ALE-Class-Map/Montreal_ALE_2021.png" alt="Can-ALE Map of Montreal" width="250"></td>
-      <td><img src="Results/ALE-Class-Map/Hamilton_ALE_2021.png" alt="Can-ALE Map of Hamilton" width="250"></td>
+      <td><img src="Results/ALE-Class-Map/montreal_ALE_2021.png" alt="Can-ALE Map of Montreal" width="250"></td>
+      <td><img src="Results/ALE-Class-Map/hamilton_ALE_2021.png" alt="Can-ALE Map of Hamilton" width="250"></td>
     </tr>
     <tr>
-      <td><img src="Results/ALE-Class-Map/Calgary_ALE_2021.png" alt="Can-ALE Map of Calgary" width="250"></td>
-      <td><img src="Results/ALE-Class-Map/Saskatoon_ALE_2021.png" alt="Can-ALE Map of Saskatoon" width="250"></td>
+      <td><img src="Results/ALE-Class-Map/calgary_ALE_2021.png" alt="Can-ALE Map of Calgary" width="250"></td>
+      <td><img src="Results/ALE-Class-Map/saskatoon_ALE_2021.png" alt="Can-ALE Map of Saskatoon" width="250"></td>
     </tr>
   </table>
 </div>
