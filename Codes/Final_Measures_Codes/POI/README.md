@@ -1,68 +1,86 @@
-# Point of Interest (POI) Index
+# Point of Interest (POI)
 
-This document outlines the methodology for a script that calculates a weighted Point of Interest (POI) index for each dissemination area (DA). The script generates a comprehensive index reflecting the availability and accessibility of destinations relevant to active living environments. The final output is an Excel file that lists each DAUID with its raw POI count and the calculated weighted POI index.
+This section outlines the method used for calculating a weighted Point of Interest (POI) index for each dissemination area (DA). The script generates a comprehensive index reflecting the availability and accessibility of destinations relevant to active living environments. The final output is an Excel file listing each DAUID alongside both a raw POI count and the calculated weighted POI index.
 
----
-## 1. Data Sources
+## Data Sources
 
-The analysis uses three main types of spatial data:
+The analysis uses three main types of data:
 
-* **Population-Weighted Centroids**:
-    * 2011: `DA_2011_hybrid_centroids_Canada.gpkg`
-    * 2016: `DA_2016_hybrid_centroids_Canada.gpkg`
-    * 2021: `DA_2021_hybrid_centroids_Canada.gpkg`
-* **DA Shapefile**: A file containing the geographic boundaries for all dissemination areas in Canada.
-    * 2011: `lda_000b11a_e.shp`
-    * 2016: `lda_000b16a_e.shp`
-    * 2021: `lda_000b21a_e.shp`
-* **POI Shapefiles**: Two separate OpenStreetMap (OSM) shapefiles are used:
-    * One file contains POIs as points (e.g., `gis_osm_pois_free_1.shp`).
-    * The other contains POIs as polygons (e.g., `gis_osm_pois_a_free_1.shp`).
-    * POIs with "code" values not considered relevant to active living are filtered out. The codes that are kept are: 2423, 2725, 2424, 2951, 2961, 2734, 2422.
+* **DA Shapefile:** A file containing the geographic boundaries for all dissemination areas in Canada.
 
----
-## 2. Spatial Data Preparation
+  * 2011: `lda_000b11a_e.shp`
 
-* **Loading and Filtering DA Data**: The script loads the national DA boundary and population-weighted centroid shapefiles. It then filters both datasets to process the data one province at a time.
-* **Coordinate Transformation**: All spatial data for a province are re-projected to the Statistics Canada Lambert projection (EPSG:3347). This projection is used to preserve accurate distance and area measurements in Canada.
-* **Creating Buffers**: A circular buffer with a 1-kilometer radius is generated around each population-weighted centroid. These buffers serve as the catchment area for counting POIs for each DA.
+  * 2016: `lda_000b16a_e.shp`
 
----
-## 3. Processing POI Data
+  * 2021: `lda_000b21a_e.shp`
 
-* **Reading and Unifying POI Files**: The two POI files (points and polygons) are read and transformed into the same projection (EPSG:3347) as the DA data.
-* **Geometry Conversion and Cleaning**: For the polygon POI file, the script corrects any geometry errors and then converts each polygon into its centroid. This ensures all POIs are represented as points.
-* **Merging and Filtering**: The two POI datasets are merged into one. POIs with irrelevant OSM codes are then removed.
+* **POI Shapefiles:** Two separate OpenStreetMap (OSM) shapefiles containing POIs:
 
----
-## 4. POI Weighting Methodology
+  * One file contains POIs as points (e.g., `gis_osm_pois_free_1.shp`).
 
-Each POI is assigned a weight based on its category and its distance from the DA's centroid, rather than a simple count.
+  * The other contains POIs as polygons (e.g., `gis_osm_pois_a_free_1.shp`).
 
-### 4.1 Category-Based Weights
+* **Population-Weighted Centroids:**
 
-POIs are given a base weight to reflect their importance to an active living environment. They are categorized into four tiers based on their OSM code:
+  * 2011: `DA_2011_hybrid_centroids_Canada.gpkg`
 
-* **Weight of 4**: Key destinations (e.g., Supermarkets, Park, Playground).
-* **Weight of 3**: Important secondary destinations (e.g., University, Library, Cafe).
-* **Weight of 2**: Other useful destinations (e.g., Cinema, Doctors, Hotel).
-* **Weight of 1**: All other relevant POIs (default).
+  * 2016: `DA_2016_hybrid_centroids_Canada.gpkg`
 
-### 4.2 Distance-Decay Weights
+  * 2021: `DA_2021_hybrid_centroids_Canada.gpkg`
 
-A second weight is applied to account for proximity, where POIs closer to the DA centroid receive a higher weight. This is calculated with an exponential distance-decay function:
+## Methodology
 
-$W_{decay} = 1.0126 \times e^{-0.0013 \times d}$
+### Step 1: Generating Buffers and Preparing POIs
 
-Where `d` is the distance in meters from the POI to the DA's population-weighted centroid.
+* **Creating Buffers:** Using the filtered population-weighted centroids for the province, the script generates a circular buffer with a 1-kilometer radius around each centroid. These buffers define the catchment area for counting and weighting POIs for each DA.
 
----
-## 5. Spatial Join and Index Calculation
+* **POI Cleaning:** Some POI records are filtered out because their "code" values are not considered relevant to active living. POIs with the following codes are excluded: `"code" NOT IN (2423, 2725, 2424, 2951, 2961, 2734, 2422)`
 
-* **Spatial Join**: All POIs are spatially joined to the 1-km buffers to identify which DA each POI is associated with.
-* **Final Weight Calculation**: A final weight is calculated for each POI within a buffer by multiplying its two weights:
-    `Final Weight = Category Weight × Distance-Decay Weight`
-* **Aggregation and Summarization**: The script groups all POIs by their DAUID and calculates two summary values:
-    * `raw_poi_count`: The simple count of all POIs in the buffer.
-    * `weighted_poi_index`: The sum of the `Final Weight` of all POIs in the buffer.
-* **Final Output**: The results are joined back to the complete list of DAs for the province. This ensures that DAs with no POIs receive a value of 0. The final table is exported as an Excel file.
+### Step 2: Processing POI Data
+
+* **Unifying POI Files:** For each province, the two POI files (points and polygons) are read and transformed into the same projection (EPSG:3347) to align with the DA data.
+
+* **Geometry Conversion and Cleaning:** For the POI file containing polygons, the script converts each polygon feature into its centroid. This step ensures all POI features are uniformly represented as points.
+
+* **Merging and Filtering:** The two processed POI datasets (original points and polygon-centroids) are merged into a single dataset. POIs with the irrelevant OSM codes listed in Step 1 are then removed.
+
+### Step 3: POI Weighting
+
+Instead of a simple count, each POI is assigned a final weight based on two factors: its category and its distance from the DA's population-weighted centroid.
+
+#### Category-Based Weights
+
+POIs are assigned a base weight to reflect their relative importance to creating an active living environment. POIs are categorized into four tiers based on their OSM code, with a higher weight indicating greater importance.
+
+* **Weight of 4:** Key destinations (e.g., Supermarkets, Park, Playground).
+
+* **Weight of 3:** Important secondary destinations (e.g., University, Library, Cafe).
+
+* **Weight of 2:** Other useful destinations (e.g., Cinema, Doctors, Hotel).
+
+* **Weight of 1:** All other relevant POIs (default).
+
+#### Distance-Decay Weights
+
+A second weight is applied to account for proximity. POIs closer to a DA's population-weighted centroid receive a higher weight than those farther away within the 1 km buffer. This is calculated using an exponential distance-decay function:
+
+$W\_decay = 1.0126 \times e^{-0.0013 \times d}$
+
+Where *d* is the distance in meters from the POI to the DA's population-weighted centroid.
+
+### Step 4: Spatial Join and Index Calculation
+
+* **Spatial Join:** All processed POIs are spatially joined to the 1-km buffers. This step identifies which DAs each POI is associated with.
+
+* **Weight Calculation:** For each POI within a DA's buffer, a final weight is calculated by multiplying its two component weights:
+  `Final Weight = Category Weight * Distance-Decay Weight`
+
+* **Final Aggregation and Summarization:** The script groups all POIs by their associated DAUID. It then calculates two summary values for each DA:
+
+  1. **raw_poi_count:** The simple count of all POIs within the buffer.
+
+  2. **weighted_poi_index:** The sum of the `Final Weight` of all POIs within the buffer. This is the primary output metric.
+
+### Final Output
+
+The summary results are joined back to the complete list of DAs for the province. This ensures that DAs with no POIs in their buffer are included in the final report with their values set to 0. The final table is then exported as an Excel file for the province.
