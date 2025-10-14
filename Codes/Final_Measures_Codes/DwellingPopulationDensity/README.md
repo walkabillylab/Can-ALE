@@ -1,15 +1,13 @@
 # Population and Dwelling Densities
 
-This section outlines the method used for calculating population and private dwelling densities. The script calculates these densities within a 1-kilometer radius of a Dissemination Area's (DA) population-weighted centroid.
-
-The core of this method is the use of census data at the Dissemination Block (DB) level, which is the smallest geographic unit for which census data is available. This approach provides a more granular and accurate spatial distribution of population and dwellings compared to methods that rely on DA-level data. The key assumption is the uniform distribution of population and dwellings within each DB. Since DBs are very small geographic areas, this assumption is more reliable and leads to a more accurate density estimation than assuming uniform distribution across a much larger DA.
+This section outlines the method used for calculating population and private dwelling densities. The script calculates these densities within a 1-kilometer radius of a Dissemination Area's (DA) population-weighted centroid. The core of this improved method is the use of census data at the Dissemination Block (DB) level, the smallest geographic unit for which census data is available. This approach provides a more granular and accurate spatial distribution of population and dwellings compared to methodologies that rely on DA-level data. The key assumption of this method is the uniform distribution of population and dwellings within each DB. Because DBs represent a very small geographic area (often just a few city blocks), this assumption is far more reliable and leads to a more accurate density estimation than assuming uniform distribution across a much larger DA.
 
 ---
-## Data Sources
+## Data Sources:
 
 The analysis relies on four key datasets:
 
-* **Census Data (DB-Level):** Population and private dwelling counts at the DB level are retrieved from the Canadian Census using the `cancensus` package. A valid API key, which can be obtained by registering on the CensusMapper website (https://censusmapper.ca/users/sign_up), is required.
+* **Census Data (DB-Level):** Population and private dwelling counts at the DB level are retrieved from the Canadian Census using the `cancensus` package. A valid API key, which can be obtained by registering on the CensusMapper website (https://censusmapper.ca/users/sign_up), is required for this process.
 
 * **DA Shapefile:** Contains geographic boundaries for all Dissemination Areas.
     * 2011: `lda_000b11a_e.shp`
@@ -29,16 +27,16 @@ The analysis relies on four key datasets:
 ---
 ## Methodology
 
-The calculation is performed for each province through a series of spatial operations.
+The calculation is performed for each province through a series of spatial operations as described below.
 
 ### Step 1: Buffer Creation
 
-First, the analysis area for each DA is defined. The script uses the pre-calculated population-weighted DA centroids to generate a 1-kilometer radius buffer around each point. This buffer specifies the area for which the density will be calculated.
+First, the analysis area for each DA is defined. The script takes the pre-calculated population-weighted DA centroids and generates a 1-kilometer radius buffer around each point. This buffer specifies the specific area for which the density will be calculated.
 
 ### Step 2: Interpolation and Proportional Allocation
 
-This is the central step where population and dwelling counts are allocated to each buffer. For each 1-km DA buffer, the script identifies all smaller DB polygons that it intersects. Since a DB may only partially fall within a buffer, the script calculates the exact proportion of each intersecting DB's area that lies inside the buffer. It then assigns the population and dwelling counts from that DB based on this area proportion. For example, if 30% of a DB's area is inside the buffer, 30% of its population and 30% of its dwellings are assigned to that buffer.
+This is the central step of the analysis, where population and dwelling counts are allocated to each buffer. For each 1-km DA buffer, the script identifies all of the smaller DB polygons that it intersects. A DB may only partially fall within a buffer. The script calculates the exact proportion of each intersecting DB's area that lies inside the buffer. It then attributes the population and dwelling counts from that DB based on this area proportion. For example, if 30% of a DB's area is inside the buffer, 30% of its population and 30% of its dwellings are assigned to that buffer.
 
 ### Step 3: Density Calculation
 
-For each DA buffer, the proportionally-allocated population and dwelling counts from all intersecting DBs are summed up. This provides an accurate estimate of the total population and dwellings within the 1-km radius. Finally, these total counts are divided by the buffer's area (which is $\pi \times (1~\text{km})^2 \approx 3.14~\text{km}^2$) to produce the final population and dwelling density measures.
+For each DA buffer, the proportionally-allocated population and dwelling counts from all the intersecting DBs are summed up. This gives a highly accurate estimate of the total population and total dwellings within the 1-km radius. Finally, these total counts are divided by the buffer's area (which is $\pi\times(1~km)2\approx3.14~km2)$ to produce the final population density and dwelling density measures.
