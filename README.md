@@ -1,4 +1,7 @@
 # Canadian Active Living Environments (Can-ALE 2.0) - 2025 Update
+## Meisam Ghasedi¹, Daniel Fuller¹, Gorham Achot², Nancy A. Ross²
+¹University of Saskatchewan  
+²Queen’s University
 
 Welcome to the official repository for the Canadian Active Living Environments (Can-ALE) 2.0 project. . This project extends the [**Can-ALE Original Project**](https://github.com/walkabillylab/Can-ALE/tree/main/Can-ALE_v1.0_release_2019) to include the **2011, 2016, and 2021** census years.
 
