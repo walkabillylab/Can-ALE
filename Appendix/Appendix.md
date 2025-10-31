@@ -226,7 +226,7 @@ This suggests that the changes made in the calculation process and reasons inclu
 ### Figure S.4. Comparison of ALE and ALE Classifications (Old and New), 2016
 
 **(a) Confusion Matrix: ALE Class**
-![ALE Class Confusion Matrix](INSERT_LINK_TO_ALE_CLASS_IMAGE_HERE)
+![ALE Class Confusion Matrix](https://github.com/walkabillylab/Can-ALE/blob/main/Appendix/Figure%20S.4.a.%20Comparison%20of%20ALE%20(Old%20and%20New)%2C%202016.jpg)
 
 **(b) Confusion Matrix: ALE Transit Class**
-![ALE Transit Class Confusion Matrix](INSERT_LINK_TO_ALE_TRANSIT_CLASS_IMAGE_HERE)
+![ALE Transit Class Confusion Matrix](https://github.com/walkabillylab/Can-ALE/blob/main/Appendix/Figure%20S.4.b.%20Comparison%20of%20ALE%20Transit%20Classifications%20(Old%20and%20New)%2C%202016.jpg)
