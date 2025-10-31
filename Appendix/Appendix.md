@@ -3,7 +3,6 @@
 Supplementary Appendix 1 shows the weighting values for the POIs of 2, 3, and 4 in Table S1.1, while those POIs in Table S1.2 are weighted as 1.
 
 ### Table S1.1. POI Weighting System
-https://github.com/walkabillylab/Can-ALE/blob/main/Appendix/Appendix.md
 | Weight = 2 | Weight = 3 | Weight = 4 |
 | :--- | :--- | :--- |
 | Post Box | Library | School |
