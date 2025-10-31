@@ -3,7 +3,7 @@
 Supplementary Appendix 1 shows the weighting values for the POIs of 2, 3, and 4 in Table S1.1, while those POIs in Table S1.2 are weighted as 1.
 
 ### Table S1.1. POI Weighting System
-
+https://github.com/walkabillylab/Can-ALE/blob/main/Appendix/Appendix.md
 | Weight = 2 | Weight = 3 | Weight = 4 |
 | :--- | :--- | :--- |
 | Post Box | Library | School |
@@ -223,7 +223,7 @@ As can be seen in Figure S.4 (a), Classes 1 and 5 exhibited the least change, wh
 On the other hand, as shown in the ALE Transit Class plot (Figure S.4 (b)), the greatest changes occurred in Classes 1 and 2, while Class 5 exhibited the least change.
 This suggests that the changes made in the calculation process and reasons including the shift to population-weighted centroids from geometric centroid, the use of different underlying data sources for transit and road networks, and a more precise, automated R-developed workflow, as mentioned earlier in detail in the comparative analysis section, caused these slight changes.
 
-### Figure S.4. Comparison of ALE and ALE Classifications (Old and New), 2016
+### Figure S.4. Comparison of ALE and ALE Transit Classifications (Old and New), 2016
 
 **(a) Confusion Matrix: ALE Class**
 ![ALE Class Confusion Matrix](https://github.com/walkabillylab/Can-ALE/blob/main/Appendix/Figure%20S.4.a.%20Comparison%20of%20ALE%20(Old%20and%20New)%2C%202016.jpg)
