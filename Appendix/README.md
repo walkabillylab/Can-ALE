@@ -220,7 +220,7 @@ Average transit stop counts rise sharply from about 8 stops per DA in Group 1 ne
 Figure S.4 shows a confusion matrix of the old and new ALE and ALE Transit classes separately.
 As can be seen in Figure S.4 (a), Classes 1 and 5 exhibited the least change, whereas Class 3 showed the greatest shift, mainly moving one level down or up.
 On the other hand, as shown in the ALE Transit Class plot (Figure S.4 (b)), the greatest changes occurred in Classes 1 and 2, while Class 5 exhibited the least change.
-This suggests that the changes made in the calculation process and reasons including the shift to population-weighted centroids from geometric centroid, the use of different underlying data sources for transit and road networks, and a more precise, automated R-developed workflow, as mentioned earlier in detail in the comparative analysis section, caused these slight changes.
+This suggests that the changes made in the calculation process and reasons including the shift to population-weighted centroids from geometric centroid, the use of different underlying data sources for transit and road networks, and a more precise, automated R-developed workflow caused these slight changes.
 
 ### Figure S.4. Comparison of ALE and ALE Transit Classifications (Old and New), 2016
 
