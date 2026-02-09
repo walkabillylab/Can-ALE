@@ -1,8 +1,19 @@
-## Supplementary Appendix 1 - Weighting
+## Supplementary Appendix 1 - Dissemination Area (DA) and Dissemination Block (DB) definitions
 
-Supplementary Appendix 1 shows the weighting values for the POIs of 2, 3, and 4 in Table S1.1, while those POIs in Table S1.2 are weighted as 1.
+# Dissemination Block (DB)
 
-### Table S1.1. POI Weighting System
+A Dissemination Block (DB) is an area bounded on all sides by roads and/or boundaries of Statistics Canada’s standard geographic areas for dissemination. The DB is the smallest geographic area for which population and dwelling counts are disseminated, and DBs cover all of Canada.
+
+# Dissemination Area (DA)
+
+A Dissemination Area (DA) is a small, relatively stable geographic unit composed of one or more adjacent Dissemination Blocks. DAs typically have an average population of 400 to 700 persons (based on the previous Census) and represent the smallest standard geographic area for which all census data are disseminated. DAs cover all of Canada.
+
+
+## Supplementary Appendix 2 - Weighting
+
+Supplementary Appendix 2 shows the weighting values for the POIs of 2, 3, and 4 in Table S1.1, while those POIs in Table S1.2 are weighted as 1.
+
+### Table S2.1. POI Weighting System
 | Weight = 2 | Weight = 3 | Weight = 4 |
 | :--- | :--- | :--- |
 | Post Box | Library | School |
@@ -37,7 +48,7 @@ Supplementary Appendix 1 shows the weighting values for the POIs of 2, 3, and 4 
 
 ---
 
-### Table S1.2 Points of Interest (POIs) with a Weight of 1
+### Table S2.2 Points of Interest (POIs) with a Weight of 1
 
 | | | | |
 | :--- | :--- | :--- | :--- |
@@ -64,11 +75,11 @@ Supplementary Appendix 1 shows the weighting values for the POIs of 2, 3, and 4 
 
 ---
 
-## Supplementary Appendix 2 – Walking and Active Transportation
+## Supplementary Appendix 3 – Walking and Active Transportation
 
-Supplementary Appendix 2 shows the descriptive statistics for walking to work and active transportation to work percentages, stratified by the 5 ALE classes for each year (2011, 2016, 2021).
+Supplementary Appendix 3 shows the descriptive statistics for walking to work and active transportation to work percentages, stratified by the 5 ALE classes for each year (2011, 2016, 2021).
 
-### Table S2.1. Summary of Active Commuting Rates Across ALE Groups
+### Table S3.1. Summary of Active Commuting Rates Across ALE Groups
 
 #### 2011
 | Measure | Statistic | All groups | 1 (very low) | 2 (low) | 3 (moderate) | 4 (high) | 5 (very high) |
@@ -106,17 +117,17 @@ Supplementary Appendix 2 shows the descriptive statistics for walking to work an
 | | Minimum | 0 | 0 | 0 | 0 | 0.009 | 0.06 |
 | | Maximum | 1 | 1 | 0.78 | 0.6 | 0.63 | 0.74 |
 
-Table S.2.1, represents descriptive statistics of Walk-to-Work and Active-Transportation-to-Work Rates across ALE groups, more granular details can be found supporting earlier findings.
+Table S.3.1, represents descriptive statistics of Walk-to-Work and Active-Transportation-to-Work Rates across ALE groups, more granular details can be found supporting earlier findings.
 
 Walk-to-work rates stayed relatively modest in Groups 1–4, ranging from roughly 3% to 6% across the three census years, but rose sharply in Group 5, increasing from 15% in 2011 to 17% in 2021. Active transport to work rates, including walking, cycling, and transit use, exhibited a much steeper gradient, starting from 13–18% in Group 1 and climbing to approximately 56% in 2011, 59% in 2016, and 50% in 2021 for Group 5. Across all ALE groups, active commuting rates generally improved between 2011 and 2016, followed by a decline in 2021 that was more evident in higher ALE categories (Groups 3–5). This shift may be partially explained by pandemic-related changes to commuting behaviors, such as increased remote work and reduced transit use, which affected active transportation levels even in neighborhoods typically supportive of non-motorized travel.
 
 ---
 
-## Supplementary Appendix 3
+## Supplementary Appendix 4
 
-Supplementary Appendix 3 shows descriptive statistics for the ALE index overall, and each of the sub-indices stratified by the 5 ALE classes for each year (2011, 2016, 2021).
+Supplementary Appendix 4 shows descriptive statistics for the ALE index overall, and each of the sub-indices stratified by the 5 ALE classes for each year (2011, 2016, 2021).
 
-### Table S.3.1. Descriptive and summary statistics of the five cluster groups - 2011
+### Table S.4.1. Descriptive and summary statistics of the five cluster groups - 2011
 
 | Measure | Statistic | All groups | 1 (very low) | 2 (low) | 3 (moderate) | 4 (high) | 5 (very high) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -139,7 +150,7 @@ Supplementary Appendix 3 shows descriptive statistics for the ALE index overall,
 
 *Note. Averages for overall ALE scores are effectively zero because the ALE scores are z-scored with a mean of zero.*
 
-### Table S.3.2. Descriptive and summary statistics of the five cluster groups - 2016
+### Table S.4.2. Descriptive and summary statistics of the five cluster groups - 2016
 
 | Measure | Statistic | All groups | 1 (very low) | 2 (low) | 3 (moderate) | 4 (high) | 5 (very high) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -170,7 +181,7 @@ Supplementary Appendix 3 shows descriptive statistics for the ALE index overall,
 
 *Note. Averages for overall ALE scores are effectively zero because the ALE scores are z-scored with a mean of zero.*
 
-### Table S.3.3 Descriptive and summary statistics of the five cluster groups - 2021
+### Table S.4.3 Descriptive and summary statistics of the five cluster groups - 2021
 
 | Measure | Statistic | All groups | 1 (very low) | 2 (low) | 3 (moderate) | 4 (high) | 5 (very high) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -215,14 +226,14 @@ Average transit stop counts rise sharply from about 8 stops per DA in Group 1 ne
 
 ---
 
-## Supplementary Appendix 4
+## Supplementary Appendix 5
 
-Figure S.4 shows a confusion matrix of the old and new ALE and ALE Transit classes separately.
-As can be seen in Figure S.4 (a), Classes 1 and 5 exhibited the least change, whereas Class 3 showed the greatest shift, mainly moving one level down or up.
-On the other hand, as shown in the ALE Transit Class plot (Figure S.4 (b)), the greatest changes occurred in Classes 1 and 2, while Class 5 exhibited the least change.
+Figure S.5 shows a confusion matrix of the old and new ALE and ALE Transit classes separately.
+As can be seen in Figure S.5 (a), Classes 1 and 5 exhibited the least change, whereas Class 3 showed the greatest shift, mainly moving one level down or up.
+On the other hand, as shown in the ALE Transit Class plot (Figure S.5 (b)), the greatest changes occurred in Classes 1 and 2, while Class 5 exhibited the least change.
 This suggests that the changes made in the calculation process and reasons including the shift to population-weighted centroids from geometric centroid, the use of different underlying data sources for transit and road networks, and a more precise, automated R-developed workflow caused these slight changes.
 
-### Figure S.4. Comparison of ALE and ALE Transit Classifications (Old and New), 2016
+### Figure S.5. Comparison of ALE and ALE Transit Classifications (Old and New), 2016
 
 **(a) Confusion Matrix: ALE Class**
 ![ALE Class Confusion Matrix](https://github.com/walkabillylab/Can-ALE/blob/main/Appendix/Figure%20S.4.a.%20Comparison%20of%20ALE%20(Old%20and%20New)%2C%202016.jpg)
