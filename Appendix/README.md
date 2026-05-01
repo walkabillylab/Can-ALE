@@ -11,7 +11,7 @@ A Dissemination Area (DA) is a small, relatively stable geographic unit composed
 
 ## Supplementary Appendix 2 - Weighting
 
-Supplementary Appendix 2 shows the weighting values for the POIs of 2, 3, and 4 in Table S1.1, while those POIs in Table S1.2 are weighted as 1.
+Supplementary Appendix 2 shows the weighting values for the POIs of 2, 3, and 4 in Table S2.1, while those POIs in Table S2.2 are weighted as 1.
 
 ### Table S2.1. POI Weighting System
 | Weight = 2 | Weight = 3 | Weight = 4 |
@@ -48,7 +48,7 @@ Supplementary Appendix 2 shows the weighting values for the POIs of 2, 3, and 4 
 
 ---
 
-### Table S2.2 Points of Interest (POIs) with a Weight of 1
+### Table S2.2. Points of Interest (POIs) with a Weight of 1
 
 | | | | |
 | :--- | :--- | :--- | :--- |
@@ -79,7 +79,7 @@ Supplementary Appendix 2 shows the weighting values for the POIs of 2, 3, and 4 
 
 Supplementary Appendix 3 shows the descriptive statistics for walking to work and active transportation to work percentages, stratified by the 5 ALE classes for each year (2011, 2016, 2021).
 
-### Table S.3 Summary of Active Commuting Rates Across ALE Groups
+### Table S.3. Summary of Active Commuting Rates Across ALE Groups
 
 #### 2011
 | Measure | Statistic | All groups | 1 (very low) | 2 (low) | 3 (moderate) | 4 (high) | 5 (very high) |
@@ -117,7 +117,7 @@ Supplementary Appendix 3 shows the descriptive statistics for walking to work an
 | | Minimum | 0 | 0 | 0 | 0 | 0.009 | 0.06 |
 | | Maximum | 1 | 1 | 0.78 | 0.6 | 0.63 | 0.74 |
 
-Table S.3.1, represents descriptive statistics of Walk-to-Work and Active-Transportation-to-Work Rates across ALE groups, more granular details can be found supporting earlier findings.
+Table S.3, represents descriptive statistics of Walk-to-Work and Active-Transportation-to-Work Rates across ALE groups, more granular details can be found supporting earlier findings.
 
 Walk-to-work rates stayed relatively modest in Groups 1–4, ranging from roughly 3% to 6% across the three census years, but rose sharply in Group 5, increasing from 15% in 2011 to 17% in 2021. Active transport to work rates, including walking, cycling, and transit use, exhibited a much steeper gradient, starting from 13–18% in Group 1 and climbing to approximately 56% in 2011, 59% in 2016, and 50% in 2021 for Group 5. Across all ALE groups, active commuting rates generally improved between 2011 and 2016, followed by a decline in 2021 that was more evident in higher ALE categories (Groups 3–5). This shift may be partially explained by pandemic-related changes to commuting behaviors, such as increased remote work and reduced transit use, which affected active transportation levels even in neighborhoods typically supportive of non-motorized travel.
 
