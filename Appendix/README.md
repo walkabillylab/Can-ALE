@@ -77,7 +77,7 @@ Supplementary Appendix 2 shows the weighting values for the POIs of 2, 3, and 4 
 
 ## Supplementary Appendix 3 – Walking and Active Transportation
 
-Table S.3. shows the descriptive statistics for walking to work and active transportation to work percentages, stratified by the 5 ALE classes for each year (2011, 2016, 2021).
+Supplementary Appendix 3 shows the descriptive statistics for walking to work and active transportation to work percentages, stratified by the 5 ALE classes for each year (2011, 2016, 2021).
 
 ### Table S.3 Summary of Active Commuting Rates Across ALE Groups
 
