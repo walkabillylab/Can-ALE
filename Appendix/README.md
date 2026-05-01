@@ -93,7 +93,7 @@ Supplementary Appendix 3 shows the descriptive statistics for walking to work an
 | | Minimum | 0 | 0 | 0 | 0 | 0.000411 | 0.19 |
 | | Maximum | 1 | 1 | 0.77 | 0.61 | 0.67 | 0.79 |
 
-#### Table S3.1. Active Commuting Rates Across ALE Groups - 2016
+#### Table S3.2. Active Commuting Rates Across ALE Groups - 2016
 | Measure | Statistic | All groups | 1 (very low) | 2 (low) | 3 (moderate) | 4 (high) | 5 (very high) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Walk-to-work rate** | Count | 56589 | 15015 | 11616 | 16041 | 10177 | 3740 |
@@ -105,7 +105,7 @@ Supplementary Appendix 3 shows the descriptive statistics for walking to work an
 | | Minimum | 0 | 0 | 0 | 0.0001 | 0.01 | 0.07 |
 | | Maximum | 1 | 1 | 0.72 | 0.7 | 0.69 | 0.84 |
 
-#### Table S3.1. Active Commuting Rates Across ALE Groups - 2021
+#### Table S3.3. Active Commuting Rates Across ALE Groups - 2021
 | Measure | Statistic | All groups | 1 (very low) | 2 (low) | 3 (moderate) | 4 (high) | 5 (very high) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Walk-to-work rate** | Count | 57932 | 15208 | 11764 | 16152 | 11334 | 3474 |
