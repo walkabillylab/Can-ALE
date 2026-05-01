@@ -81,7 +81,7 @@ Supplementary Appendix 3 shows the descriptive statistics for walking to work an
 
 ### Table S.3. Summary of Active Commuting Rates Across ALE Groups
 
-#### 2011
+#### Table S3.1. Active Commuting Rates Across ALE Groups - 2011
 | Measure | Statistic | All groups | 1 (very low) | 2 (low) | 3 (moderate) | 4 (high) | 5 (very high) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Walk-to-work rate** | Count | 56204 | 15051 | 12528 | 15481 | 9936 | 3208 |
@@ -93,7 +93,7 @@ Supplementary Appendix 3 shows the descriptive statistics for walking to work an
 | | Minimum | 0 | 0 | 0 | 0 | 0.000411 | 0.19 |
 | | Maximum | 1 | 1 | 0.77 | 0.61 | 0.67 | 0.79 |
 
-#### 2016
+#### Table S3.1. Active Commuting Rates Across ALE Groups - 2016
 | Measure | Statistic | All groups | 1 (very low) | 2 (low) | 3 (moderate) | 4 (high) | 5 (very high) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Walk-to-work rate** | Count | 56589 | 15015 | 11616 | 16041 | 10177 | 3740 |
@@ -105,7 +105,7 @@ Supplementary Appendix 3 shows the descriptive statistics for walking to work an
 | | Minimum | 0 | 0 | 0 | 0.0001 | 0.01 | 0.07 |
 | | Maximum | 1 | 1 | 0.72 | 0.7 | 0.69 | 0.84 |
 
-#### 2021
+#### Table S3.1. Active Commuting Rates Across ALE Groups - 2021
 | Measure | Statistic | All groups | 1 (very low) | 2 (low) | 3 (moderate) | 4 (high) | 5 (very high) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Walk-to-work rate** | Count | 57932 | 15208 | 11764 | 16152 | 11334 | 3474 |
@@ -117,7 +117,7 @@ Supplementary Appendix 3 shows the descriptive statistics for walking to work an
 | | Minimum | 0 | 0 | 0 | 0 | 0.009 | 0.06 |
 | | Maximum | 1 | 1 | 0.78 | 0.6 | 0.63 | 0.74 |
 
-Table S.3, represents descriptive statistics of Walk-to-Work and Active-Transportation-to-Work Rates across ALE groups, more granular details can be found supporting earlier findings.
+Table S3, represents descriptive statistics of Walk-to-Work and Active-Transportation-to-Work Rates across ALE groups, more granular details can be found supporting earlier findings.
 
 Walk-to-work rates stayed relatively modest in Groups 1–4, ranging from roughly 3% to 6% across the three census years, but rose sharply in Group 5, increasing from 15% in 2011 to 17% in 2021. Active transport to work rates, including walking, cycling, and transit use, exhibited a much steeper gradient, starting from 13–18% in Group 1 and climbing to approximately 56% in 2011, 59% in 2016, and 50% in 2021 for Group 5. Across all ALE groups, active commuting rates generally improved between 2011 and 2016, followed by a decline in 2021 that was more evident in higher ALE categories (Groups 3–5). This shift may be partially explained by pandemic-related changes to commuting behaviors, such as increased remote work and reduced transit use, which affected active transportation levels even in neighborhoods typically supportive of non-motorized travel.
 
@@ -127,7 +127,7 @@ Walk-to-work rates stayed relatively modest in Groups 1–4, ranging from roughl
 
 Supplementary Appendix 4 shows descriptive statistics for the ALE index overall, and each of the sub-indices stratified by the 5 ALE classes for each year (2011, 2016, 2021).
 
-### Table S.4.1. Descriptive and summary statistics of the five cluster groups - 2011
+### Table S4.1. Descriptive and summary statistics of the five cluster groups - 2011
 
 | Measure | Statistic | All groups | 1 (very low) | 2 (low) | 3 (moderate) | 4 (high) | 5 (very high) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -150,7 +150,7 @@ Supplementary Appendix 4 shows descriptive statistics for the ALE index overall,
 
 *Note. Averages for overall ALE scores are effectively zero because the ALE scores are z-scored with a mean of zero.*
 
-### Table S.4.2. Descriptive and summary statistics of the five cluster groups - 2016
+### Table S4.2. Descriptive and summary statistics of the five cluster groups - 2016
 
 | Measure | Statistic | All groups | 1 (very low) | 2 (low) | 3 (moderate) | 4 (high) | 5 (very high) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -181,7 +181,7 @@ Supplementary Appendix 4 shows descriptive statistics for the ALE index overall,
 
 *Note. Averages for overall ALE scores are effectively zero because the ALE scores are z-scored with a mean of zero.*
 
-### Table S.4.3 Descriptive and summary statistics of the five cluster groups - 2021
+### Table S4.3 Descriptive and summary statistics of the five cluster groups - 2021
 
 | Measure | Statistic | All groups | 1 (very low) | 2 (low) | 3 (moderate) | 4 (high) | 5 (very high) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -228,12 +228,12 @@ Average transit stop counts rise sharply from about 8 stops per DA in Group 1 ne
 
 ## Supplementary Appendix 5
 
-Figure S.5 shows a confusion matrix of the old and new ALE and ALE Transit classes separately.
-As can be seen in Figure S.5 (a), Classes 1 and 5 exhibited the least change, whereas Class 3 showed the greatest shift, mainly moving one level down or up.
-On the other hand, as shown in the ALE Transit Class plot (Figure S.5 (b)), the greatest changes occurred in Classes 1 and 2, while Class 5 exhibited the least change.
+Figure S5 shows a confusion matrix of the old and new ALE and ALE Transit classes separately.
+As can be seen in Figure S5 (a), Classes 1 and 5 exhibited the least change, whereas Class 3 showed the greatest shift, mainly moving one level down or up.
+On the other hand, as shown in the ALE Transit Class plot (Figure S5 (b)), the greatest changes occurred in Classes 1 and 2, while Class 5 exhibited the least change.
 This suggests that the changes made in the calculation process and reasons including the shift to population-weighted centroids from geometric centroid, the use of different underlying data sources for transit and road networks, and a more precise, automated R-developed workflow caused these slight changes.
 
-### Figure S.5. Comparison of ALE and ALE Transit Classifications (Old and New), 2016
+### Figure S5. Comparison of ALE and ALE Transit Classifications (Old and New), 2016
 
 **(a) Confusion Matrix: ALE Class**
 ![ALE Class Confusion Matrix](https://github.com/walkabillylab/Can-ALE/blob/main/Appendix/Figure%20S.4.a.%20Comparison%20of%20ALE%20(Old%20and%20New)%2C%202016.jpg)
